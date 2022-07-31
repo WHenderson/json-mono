@@ -1,4 +1,3 @@
-import {Json} from "../types";
 import {is_array, is_index, is_object} from "../guards";
 import {object_member} from "./object_member";
 import {array_element} from "./array_element";
@@ -9,7 +8,7 @@ import {array_element} from "./array_element";
  * @param value
  * @param key_or_index
  */
-export function container_item<T>(value: Record<string, T> | T[], key_or_index: number | string): Json | undefined {
+export function container_item<T>(value: Record<string, T> | T[], key_or_index: number | string): T | undefined {
     if (is_array(value)) {
         if (!is_index(key_or_index))
             return undefined;

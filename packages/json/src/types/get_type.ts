@@ -1,36 +1,31 @@
-import {Json, JsonToType, JsonTypeEnum} from "./index";
+import {JsonToType, JsonTypeEnum} from "./index";
 import {is_array, is_object} from "../guards";
 
 /**
  * Returns the type of the given value
  * @param value
  */
-export function get_type<T extends Json>(value : T) : JsonToType<T> {
+export function get_type<T>(value: T) : JsonToType<T>;
+
+export function get_type(value : any) : JsonTypeEnum {
     switch (value) {
         case undefined:
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            break;
+            return JsonTypeEnum.UNDEFINED;
         case null:
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            return <any>JsonTypeEnum.NULL;
+            return JsonTypeEnum.NULL;
         default: {
             switch (typeof value) {
                 case 'boolean':
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                    return <any>JsonTypeEnum.BOOLEAN;
+                    return JsonTypeEnum.BOOLEAN;
                 case 'number':
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                    return <any>JsonTypeEnum.NUMBER;
+                    return JsonTypeEnum.NUMBER;
                 case 'string':
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                    return <any>JsonTypeEnum.STRING;
+                    return JsonTypeEnum.STRING;
                 default: {
                     if (is_object(value))
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                        return <any>JsonTypeEnum.OBJECT;
+                        return JsonTypeEnum.OBJECT;
                     if (is_array(value))
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-                        return <any>JsonTypeEnum.ARRAY;
+                        return JsonTypeEnum.ARRAY;
                 }
             }
         }
