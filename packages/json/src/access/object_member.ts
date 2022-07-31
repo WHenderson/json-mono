@@ -1,4 +1,3 @@
-import {Json, JsonObject} from "../types";
 import {object_has_key} from "./object_has_key";
 
 /**
@@ -7,7 +6,7 @@ import {object_has_key} from "./object_has_key";
  * @param json
  * @param key
  */
-export function object_member(json: JsonObject, key: string): Json | undefined {
+export function object_member<T>(json: Record<string, T>, key: string): T | undefined {
     if (!object_has_key(json, key))
         return undefined;
 

@@ -63,13 +63,15 @@ it('should correctly identify all values', () => {
         { value: false, truthy: [is_boolean, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: 1, truthy: [is_integer, is_safe_integer, is_number, is_finite_number, is_index, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: -1, truthy: [is_integer, is_safe_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
-        { value: Number.MAX_SAFE_INTEGER + 1, truthy: [is_integer, is_number, is_finite_number, is_index, is_primitive, is_encodable_primitive, ...guards_json]},
+        { value: Number.MAX_SAFE_INTEGER, truthy: [is_integer, is_safe_integer, is_number, is_finite_number, is_index, is_primitive, is_encodable_primitive, ...guards_json]},
+        { value: Number.MIN_SAFE_INTEGER, truthy: [is_integer, is_safe_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
+        { value: Number.MAX_SAFE_INTEGER + 1, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: Number.MIN_SAFE_INTEGER - 1, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: NaN, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
         { value: Number.NEGATIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
         { value: Number.POSITIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
         { value: Number.MIN_VALUE, truthy: [is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
-        { value: Number.MAX_VALUE, truthy: [is_integer, is_number, is_finite_number, is_index, is_primitive, is_encodable_primitive, ...guards_json]},
+        { value: Number.MAX_VALUE, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: 'xxx', truthy: [is_string, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: {}, truthy: [is_object, is_container, ...guards_json]},
         { value: { a: undefined }, truthy: [is_object, is_container, is_json, is_json_deep, is_encodable_json, is_encodable_json_deep, ]},
@@ -79,11 +81,11 @@ it('should correctly identify all values', () => {
         { value: [NaN], truthy: [is_array, is_container, is_json, is_json_deep, is_pure_json_deep, is_encodable_json ]},
     ];
 
-    values.forEach(({ value, truthy }) => {
+    values.forEach(({ value, truthy }, index) => {
         guards.forEach(guard => {
             const is = guard(value);
             const has = truthy.includes(<any>guard);
-            expect(is, `${guard.name}(${inspect(value)})`).toBe(has);
+            expect(is, `${index}:${guard.name}(${inspect(value)})`).toBe(has);
         });
     });
 })

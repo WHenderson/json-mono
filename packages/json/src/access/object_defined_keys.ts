@@ -1,4 +1,3 @@
-import {JsonObject} from "../types";
 import {object_defined_entries} from "./object_defined_entries";
 
 /**
@@ -6,6 +5,6 @@ import {object_defined_entries} from "./object_defined_entries";
  *
  * @param obj
  */
-export function object_defined_keys(obj: JsonObject): string[] {
+export function object_defined_keys<T>(obj: Record<string, T>): string[] {
     return object_defined_entries(obj).map(([key,_value]) => key);
 }

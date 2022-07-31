@@ -1,7 +1,7 @@
-import {DeepMaybeJson} from "../types";
 import {is_primitive} from "./is_primitive";
 import {is_array} from "./is_array";
 import {is_object} from "./is_object";
+import {MaybeJsonish} from "../types";
 
 /**
  * Compares entries by their key value.
@@ -23,8 +23,8 @@ export function compare_entries_by_key([lhs,]: [string, unknown], [rhs,]: [strin
  * @param lhs
  * @param rhs
  */
-export function is_equal_deep(lhs: DeepMaybeJson, rhs: DeepMaybeJson): boolean {
-    if (lhs === rhs)
+export function is_equal_deep(lhs: MaybeJsonish, rhs: MaybeJsonish): boolean {
+    if (lhs === rhs || Number.isNaN(lhs) && Number.isNaN(rhs))
         return true;
     if (lhs === undefined || rhs === undefined || is_primitive(lhs) || is_primitive(rhs))
         return false;
