@@ -7,7 +7,7 @@ export * from "./is_index";
 export * from "./is_number";
 export * from "./is_finite_number";
 export * from "./is_string";
-export * from "./is_primitive"
+export * from "./is_primitive";
 export * from "./is_encodable_primitive";
 export * from "./is_object";
 export * from "./is_array";
@@ -18,4 +18,4 @@ export * from "./is_pure_json_deep";
 export * from "./is_encodable_json";
 export * from "./is_encodable_json_deep";
 export * from "./is_encodable_pure_json_deep";
-export * from "./is_json_equal_deep";
+export * from "./is_equal_deep";

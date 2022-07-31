@@ -19,7 +19,7 @@ function _is_pure_json_deep(value: any, stack: JsonContainer[]): value is Json {
         return true;
 
     if (stack.some(parent => parent === value))
-        return false; // recursive structure
+        throw new Error('recursive structure detected');
 
     const stack_ = [...stack, value];
 

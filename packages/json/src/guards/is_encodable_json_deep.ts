@@ -22,7 +22,7 @@ function _is_encodable_json_deep(value: any, stack: JsonContainer[]): value is J
         return true;
 
     if (stack.some(parent => parent === value))
-        return false; // recursive structure
+        throw new Error('recursive structure detected');
 
     const stack_ = [...stack, value];
 

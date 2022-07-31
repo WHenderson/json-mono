@@ -4,10 +4,14 @@ export type JsonArray = Json[];
 export type JsonContainer = JsonObject | JsonArray;
 export type Json = JsonPrimitive | JsonContainer;
 
-export type Maybe<T> = T | undefined;
+export type MaybeJsonPrimitive = JsonPrimitive | undefined;
+export type MaybeJsonObject = JsonObject | undefined;
+export type MaybeJsonArray = JsonArray | undefined;
+export type MaybeJsonContainer = JsonContainer | undefined;
+export type MaybeJson = Json | undefined;
 
-export type MaybeJsonPrimitive = Maybe<JsonPrimitive>;
-export type MaybeJsonObject = Maybe<JsonObject>;
-export type MaybeJsonArray = Maybe<JsonArray>;
-export type MaybeJsonContainer = Maybe<JsonContainer>;
-export type MaybeJson = Maybe<Json>;
+export type DeepMaybeJsonPrimitive = MaybeJsonPrimitive;
+export type DeepMaybeJsonObject = { [prop: string]: DeepMaybeJson } | undefined;
+export type DeepMaybeJsonArray = DeepMaybeJson[] | undefined;
+export type DeepMaybeJsonContainer = DeepMaybeJsonObject | DeepMaybeJsonArray | undefined;
+export type DeepMaybeJson = DeepMaybeJsonPrimitive | DeepMaybeJsonContainer | undefined;
