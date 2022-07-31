@@ -1,4 +1,4 @@
-import {Json, JsonContainer} from "../types";
+import {Json, JsonContainer, JsonPrimitive} from "../types";
 import {is_primitive} from "./is_primitive";
 import {is_array} from "./is_array";
 import {is_object} from "./is_object";
@@ -10,7 +10,7 @@ import {is_finite_number} from "./is_finite_number";
  * Note that object members may be undefined
  * @param value
  */
-export function is_encodable_pure_json_deep(value: any): value is Json {
+export function is_encodable_pure_json_deep<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
     return _is_encodable_pure_json_deep(value, []);
 }
 

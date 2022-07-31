@@ -1,4 +1,4 @@
-import {Json} from "../types";
+import {JsonPrimitive} from "../types";
 
 /**
  * Returns true if value is a JSON type.
@@ -6,7 +6,7 @@ import {Json} from "../types";
  *
  * @param value
  */
-export function is_json(value: any): value is Json {
+export function is_json<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
     switch (typeof value) {
         case 'boolean':
         case 'number':
