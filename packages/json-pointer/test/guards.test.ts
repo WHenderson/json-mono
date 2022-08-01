@@ -30,6 +30,7 @@ it('should correctly identify example pointers', () => {
         { value: '0#', truthy: [is_pointer, is_relative, is_relative_iref] },
         { value: '00', truthy: [] },
         { value: '01', truthy: [] },
+        { value: '99999999999999999999999999999999999999999999999', truthy: [] },
         { value: '123', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '123/', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '123/a/b/c', truthy: [is_pointer, is_relative, is_relative_pure] },
