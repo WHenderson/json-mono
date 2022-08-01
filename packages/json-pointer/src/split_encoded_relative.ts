@@ -3,7 +3,7 @@ import {Pointer, Segment} from "./types";
 import {parse_index} from "@crikey/json";
 
 export function split_encoded_relative(pointer: Pointer): { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {
-    const match = pointer.match(/^(0|[1-9][0-9]*)($|#$|\/.*$)/);
+    const match = pointer.match(/^(0|[1-9][0-9]*)($|#$|\/(?:[^~]|~0|~1)*$)/);
     if (!match)
         throw new PointerDecodingError('invalid relative pointer');
 

@@ -1,10 +1,10 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
 import {Pointer, Segment} from "./types";
+import {is_absolute} from "./is_absolute";
 
 export function split_encoded_absolute(pointer: Pointer): Segment[] {
-    const segments = pointer.split('/');
-    if (segments[0] !== '')
+    if (!is_absolute(pointer))
         throw new PointerDecodingError('invalid absolute pointer');
 
-    return segments.slice(1);
+    return pointer.split('/').slice(1);
 }
