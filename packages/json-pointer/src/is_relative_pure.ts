@@ -10,6 +10,6 @@ export function is_relative_pure(pointer: any) : pointer is Pointer {
     if (typeof pointer !== 'string')
         return false;
 
-    const match = pointer.match(/^(0|[1-9][0-9]*)(?:$|\/)/);
+    const match = pointer.match(/^(0|[1-9][0-9]*)(?:$|\/(?:[^~]|~0|~1)*$)/);
     return !!match && parse_index(match[1]) !== undefined;
 }

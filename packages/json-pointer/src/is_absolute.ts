@@ -9,5 +9,5 @@ export function is_absolute(pointer: any) : pointer is Pointer {
     if (typeof pointer !== 'string')
         return false;
 
-    return /^(?:$|\/)/.test(pointer);
+    return /^(?:$|\/(?:[^~]|~0|~1)*$)/.test(pointer);
 }
