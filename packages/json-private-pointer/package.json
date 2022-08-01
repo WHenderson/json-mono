@@ -1,5 +1,5 @@
 {
-  "name": "@crikey/json-pointer-ext",
+  "name": "@crikey/json-private-pointer",
   "version": "0.0.0",
   "description": "",
   "packageManager": "pnpm@6.0.0",

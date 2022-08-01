@@ -8,5 +8,5 @@ See [json-mono](https://whenderson.github.io/json-mono/) for full documentation.
 
 * [@crikey/json](./packages/json/README.md)<br> Basic JSON types and utility functions
 * [@crikey/json-pointer](./packages/json-pointer/README.md)<br> Functions for handling json pointers
-* [@crikey/json-pointer-ext](./packages/json-pointer-ext/README.md)<br> Functions for handling extended json pointers
+* [@crikey/json-private-pointer](packages/json-private-pointer/README.md)<br> Functions for handling extended json pointers
 
