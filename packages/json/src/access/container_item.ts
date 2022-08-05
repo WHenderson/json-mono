@@ -1,4 +1,4 @@
-import {is_array, is_index, is_object} from "../guards";
+import {is_array, is_index_number, is_object} from "../guards";
 import {object_member} from "./object_member";
 import {array_element} from "./array_element";
 
@@ -10,7 +10,7 @@ import {array_element} from "./array_element";
  */
 export function container_item<T>(value: Record<string, T> | T[], key_or_index: number | string): T | undefined {
     if (is_array(value)) {
-        if (!is_index(key_or_index))
+        if (!is_index_number(key_or_index))
             return undefined;
         
         return array_element(value, key_or_index);

@@ -1,3 +1,6 @@
+export type IndexNumber = number & { __tag__: "index" };
+export type IndexString = string & { __tag__: "index" };
+
 export type JsonPrimitive = null | boolean | number | string;
 export type JsonObject = { [prop: string]: Json };
 export type JsonArray = Json[];

@@ -5,16 +5,7 @@
 import {is_index_number} from "../guards";
 import {IndexNumber} from "../types";
 
-export function parse_index(encoded_index: any) : IndexNumber | undefined {
-    if (typeof encoded_index === 'number') {
-        if (is_index_number(encoded_index))
-            return encoded_index;
-        return undefined;
-    }
-
-    if (typeof encoded_index !== 'string')
-        return undefined;
-
+export function parse_index_string(encoded_index: string) : IndexNumber | undefined {
     if (!/^(0|[1-9][0-9]*)$/.test(encoded_index))
         return;
 
