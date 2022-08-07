@@ -1,7 +1,7 @@
 import {MaybeJson, MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_container} from "../guards";
-import {parse_index} from "../util";
+import {_next} from "./_next";
 
 export function traverse_delete(root: MaybeJson, path: Path): MaybeJson;
 export function traverse_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
@@ -17,57 +17,9 @@ export function traverse_delete(parent: MaybeJsonish, path: Path): MaybeJsonish 
 
     const result_parent = parent;
 
-    const [key, child] = (() => {
-        if (!is_container(result_parent)) {
-            return [
-                undefined,
-                undefined
-            ]
-        }
-        else
-        if (Array.isArray(result_parent)) {
-            if (next === 'length') {
-                return [
-                    next,
-                    result_parent.length
-                ];
-            }
-            else
-            if (next === '-') {
-                return [
-                    result_parent.length,
-                    undefined
-                ]
-            }
-            else {
-                const index = parse_index(next);
-                if (index === undefined) {
-                    return [
-                        undefined,
-                        undefined
-                    ]
-                }
+    const [key, child] = _next(result_parent, next);
 
-                return [
-                    index,
-                    (index < result_parent.length)
-                    ? result_parent[index]
-                    : undefined
-                ];
-            }
-        }
-        else {
-            const key = `${next}`;
-            return [
-                key,
-                Object.hasOwn(result_parent, key)
-                ? result_parent[key]
-                : undefined
-            ];
-        }
-    })();
-
-    if (child === undefined)
+    if (key === undefined || child === undefined)
         return parent;
 
     if (remainder.length === 0) {

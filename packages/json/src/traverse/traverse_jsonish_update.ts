@@ -2,6 +2,7 @@ import {MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_container, is_index_number} from "../guards";
 import {parse_index} from "../util";
+import {_next} from "./_next";
 
 export function traverse_jsonish_update(parent: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish): MaybeJsonish {
     if (path.length === 0)
@@ -15,55 +16,7 @@ export function traverse_jsonish_update(parent: MaybeJsonish, path: Path, update
         ? []
         : {};
 
-    const [key, child] = (() => {
-        if (!is_container(result_parent)) {
-            return [
-                undefined,
-                undefined
-            ]
-        }
-        else
-        if (Array.isArray(result_parent)) {
-            if (next === 'length') {
-                return [
-                    next,
-                    result_parent.length
-                ];
-            }
-            else
-            if (next === '-') {
-                return [
-                    result_parent.length,
-                    undefined
-                ]
-            }
-            else {
-                const index = parse_index(next);
-                if (index === undefined) {
-                    return [
-                        undefined,
-                        undefined
-                    ]
-                }
-
-                return [
-                    index,
-                    (index < result_parent.length)
-                    ? result_parent[index]
-                    : undefined
-                ];
-            }
-        }
-        else {
-            const key = `${next}`;
-            return [
-                key,
-                Object.hasOwn(result_parent, key)
-                    ? result_parent[key]
-                    : undefined
-            ];
-        }
-    })();
+    const [key, child] = _next(result_parent, next);
 
     const result_child = traverse_jsonish_update(child, remainder, update);
     if (key === undefined || !is_container(result_parent)) {
