@@ -1,11 +1,12 @@
-import {MaybeJsonish} from "../types";
+import {MaybeJson, MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_container} from "../guards";
 import {parse_index} from "../util";
 
-export function traverse_jsonish_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
+export function traverse_delete(root: MaybeJson, path: Path): MaybeJson;
+export function traverse_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
 
-export function traverse_jsonish_delete(parent: MaybeJsonish, path: Path): MaybeJsonish {
+export function traverse_delete(parent: MaybeJsonish, path: Path): MaybeJsonish {
     if (path.length === 0)
         return undefined;
 
@@ -50,8 +51,8 @@ export function traverse_jsonish_delete(parent: MaybeJsonish, path: Path): Maybe
                 return [
                     index,
                     (index < result_parent.length)
-                        ? result_parent[index]
-                        : undefined
+                    ? result_parent[index]
+                    : undefined
                 ];
             }
         }
@@ -60,8 +61,8 @@ export function traverse_jsonish_delete(parent: MaybeJsonish, path: Path): Maybe
             return [
                 key,
                 Object.hasOwn(result_parent, key)
-                    ? result_parent[key]
-                    : undefined
+                ? result_parent[key]
+                : undefined
             ];
         }
     })();
@@ -81,7 +82,8 @@ export function traverse_jsonish_delete(parent: MaybeJsonish, path: Path): Maybe
         }
     }
     else
-        traverse_jsonish_delete(child, remainder);
+        traverse_delete(child, remainder);
 
     return result_parent;
 }
+

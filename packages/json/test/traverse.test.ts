@@ -1,42 +1,90 @@
 import {describe, expect, it} from "vitest";
 import {
     traverse_get,
-    traverse_json_delete,
+    traverse_delete,
     traverse_json_update,
-    traverse_jsonish_delete,
     traverse_jsonish_update
 } from "../src/traverse";
 
-describe('get', () => {
-    const get = traverse_get;
+describe('either json or jsonish', () => {
+    describe('get', () => {
+        const get = traverse_get;
 
-    it('should return undefined for missing, inaccessible, or invalid paths', () => {
-        expect(get(undefined, ['x'])).toBeUndefined();
-        expect(get(null, ['x'])).toBeUndefined();
-        expect(get(true, ['x'])).toBeUndefined();
-        expect(get(1, ['x'])).toBeUndefined();
-        expect(get('string', ['x'])).toBeUndefined();
-        expect(get({ a: 1 }, ['x'])).toBeUndefined();
-        expect(get({ x: undefined }, ['x'])).toBeUndefined();
-        expect(get([], ['x'])).toBeUndefined();
-        expect(get([], [10])).toBeUndefined();
-        expect(get([], ['-'])).toBeUndefined();
+        it('should return undefined for missing, inaccessible, or invalid paths', () => {
+            expect(get(undefined, ['x'])).toBeUndefined();
+            expect(get(null, ['x'])).toBeUndefined();
+            expect(get(true, ['x'])).toBeUndefined();
+            expect(get(1, ['x'])).toBeUndefined();
+            expect(get('string', ['x'])).toBeUndefined();
+            expect(get({ a: 1 }, ['x'])).toBeUndefined();
+            expect(get({ x: undefined }, ['x'])).toBeUndefined();
+            expect(get([], ['x'])).toBeUndefined();
+            expect(get([], [10])).toBeUndefined();
+            expect(get([], ['-'])).toBeUndefined();
+        });
+
+        it('should return array length', () => {
+            expect(get(['a','b','c'], ['length'])).toBe(3);
+            expect(get({ a: ['a','b','c'] }, ['a', 'length'])).toBe(3);
+        });
+
+        it('should return array elements', () => {
+            expect(get(['a','b','c'], [1])).toBe('b');
+            expect(get(['a','b','c'], ['1'])).toBe('b');
+        });
+
+        it('should return object members', () => {
+            expect(get({ a: 1, b: 2}, ['a'])).toBe(1);
+            expect(get({ a: 1, b: 2}, ['b'])).toBe(2);
+        })
     });
 
-    it('should return array length', () => {
-        expect(get(['a','b','c'], ['length'])).toBe(3);
-        expect(get({ a: ['a','b','c'] }, ['a', 'length'])).toBe(3);
-    });
+    describe('delete', () => {
+        const del = traverse_delete;
 
-    it('should return array elements', () => {
-        expect(get(['a','b','c'], [1])).toBe('b');
-        expect(get(['a','b','c'], ['1'])).toBe('b');
-    });
+        it('should return undefined when deleting root element', () => {
+            expect(del(undefined, [])).toBe(undefined);
+            expect(del(null, [])).toBe(undefined);
+            expect(del(true, [])).toBe(undefined);
+            expect(del(1, [])).toBe(undefined);
+            expect(del({}, [])).toBe(undefined);
+            expect(del([], [])).toBe(undefined);
+        });
 
-    it('should return object members', () => {
-        expect(get({ a: 1, b: 2}, ['a'])).toBe(1);
-        expect(get({ a: 1, b: 2}, ['b'])).toBe(2);
-    })
+        it('should ignore deleting undefined, missing, inaccessible, or invalid paths', () => {
+            expect(del(undefined, ['x'])).toBe(undefined);
+            expect(del(null, ['x'])).toBe(null);
+            expect(del(true, ['x'])).toBe(true);
+            expect(del(1, ['x'])).toBe(1);
+            expect(del('string', ['x'])).toBe('string');
+            expect(del({ a: 1 }, ['x'])).to.deep.equal({ a: 1})
+            expect(del([], ['x'])).to.deep.equal([]);
+            expect(del([], [10])).to.deep.equal([]);
+            expect(del([], ['-'])).to.deep.equal([]);
+        });
+
+        it('should throw when deleting array length', () => {
+            expect(() => del([], ['length'])).to.throw(RangeError, 'Invalid array length');
+        });
+
+        it('should delete array elements', () => {
+            expect(del(['a','b','c'], [1])).to.deep.equal(['a','c']);
+            expect(del(['a','b','c'], ['1'])).to.deep.equal(['a','c']);
+            expect(del(['a','b','c'], ['-'])).to.deep.equal(['a','b','c']);
+            expect(del(['a','b','c'], [3])).to.deep.equal(['a','b','c']);
+            expect(del(['a','b','c'], ['3'])).to.deep.equal(['a','b','c']);
+        });
+
+        it('should delete object elements', () => {
+            expect(del({ a: 1}, ['a'])).to.deep.equal({});
+            expect(del({ a: 1}, ['x'])).to.deep.equal({ a: 1 });
+        });
+
+        it('should delete deep items', () => {
+            expect(del({a:['a','b','c']}, ['a',1])).to.deep.equal({a:['a','c']});
+            expect(del([{a:1}], [0,'a'])).to.deep.equal([{}]);
+        })
+    });
 });
 
 describe('json', () => {
@@ -104,53 +152,6 @@ describe('json', () => {
             expect(update({ a: 1 }, ['a'], set_undefined)).to.deep.equal({});
         })
     });
-
-    describe('delete', () => {
-        const del = traverse_json_delete;
-
-        it('should return undefined when deleting root element', () => {
-            expect(del(undefined, [])).toBe(undefined);
-            expect(del(null, [])).toBe(undefined);
-            expect(del(true, [])).toBe(undefined);
-            expect(del(1, [])).toBe(undefined);
-            expect(del({}, [])).toBe(undefined);
-            expect(del([], [])).toBe(undefined);
-        });
-
-        it('should ignore deleting undefined, missing, inaccessible, or invalid paths', () => {
-            expect(del(undefined, ['x'])).toBe(undefined);
-            expect(del(null, ['x'])).toBe(null);
-            expect(del(true, ['x'])).toBe(true);
-            expect(del(1, ['x'])).toBe(1);
-            expect(del('string', ['x'])).toBe('string');
-            expect(del({ a: 1 }, ['x'])).to.deep.equal({ a: 1})
-            expect(del([], ['x'])).to.deep.equal([]);
-            expect(del([], [10])).to.deep.equal([]);
-            expect(del([], ['-'])).to.deep.equal([]);
-        });
-
-        it('should throw when deleting array length', () => {
-            expect(() => del([], ['length'])).to.throw(RangeError, 'Invalid array length');
-        });
-
-        it('should delete array elements', () => {
-            expect(del(['a','b','c'], [1])).to.deep.equal(['a','c']);
-            expect(del(['a','b','c'], ['1'])).to.deep.equal(['a','c']);
-            expect(del(['a','b','c'], ['-'])).to.deep.equal(['a','b','c']);
-            expect(del(['a','b','c'], [3])).to.deep.equal(['a','b','c']);
-            expect(del(['a','b','c'], ['3'])).to.deep.equal(['a','b','c']);
-        });
-
-        it('should delete object elements', () => {
-            expect(del({ a: 1}, ['a'])).to.deep.equal({});
-            expect(del({ a: 1}, ['x'])).to.deep.equal({ a: 1 });
-        });
-
-        it('should delete deep items', () => {
-            expect(del({a:['a','b','c']}, ['a',1])).to.deep.equal({a:['a','c']});
-            expect(del([{a:1}], [0,'a'])).to.deep.equal([{}]);
-        })
-    });
 });
 
 describe('jsonish', () => {
@@ -215,53 +216,6 @@ describe('jsonish', () => {
             expect(update({ a: 1 }, ['a'], set_2)).to.deep.equal({ a: 2 });
             expect(update({ a: 1 }, ['b'], set_2)).to.deep.equal({ a: 1, b: 2 });
             expect(update({ a: 1 }, ['a'], set_undefined)).to.deep.equal({ a: undefined });
-        })
-    });
-
-    describe('delete', () => {
-        const del = traverse_jsonish_delete;
-
-        it('should return undefined when deleting root element', () => {
-            expect(del(undefined, [])).toBe(undefined);
-            expect(del(null, [])).toBe(undefined);
-            expect(del(true, [])).toBe(undefined);
-            expect(del(1, [])).toBe(undefined);
-            expect(del({}, [])).toBe(undefined);
-            expect(del([], [])).toBe(undefined);
-        });
-
-        it('should ignore deleting undefined, missing, inaccessible, or invalid paths', () => {
-            expect(del(undefined, ['x'])).toBe(undefined);
-            expect(del(null, ['x'])).toBe(null);
-            expect(del(true, ['x'])).toBe(true);
-            expect(del(1, ['x'])).toBe(1);
-            expect(del('string', ['x'])).toBe('string');
-            expect(del({ a: 1 }, ['x'])).to.deep.equal({ a: 1})
-            expect(del([], ['x'])).to.deep.equal([]);
-            expect(del([], [10])).to.deep.equal([]);
-            expect(del([], ['-'])).to.deep.equal([]);
-        });
-
-        it('should throw when deleting array length', () => {
-            expect(() => del([], ['length'])).to.throw(RangeError, 'Invalid array length');
-        });
-
-        it('should delete array elements', () => {
-            expect(del(['a','b','c'], [1])).to.deep.equal(['a','c']);
-            expect(del(['a','b','c'], ['1'])).to.deep.equal(['a','c']);
-            expect(del(['a','b','c'], ['-'])).to.deep.equal(['a','b','c']);
-            expect(del(['a','b','c'], [3])).to.deep.equal(['a','b','c']);
-            expect(del(['a','b','c'], ['3'])).to.deep.equal(['a','b','c']);
-        });
-
-        it('should delete object elements', () => {
-            expect(del({ a: 1}, ['a'])).to.deep.equal({});
-            expect(del({ a: 1}, ['x'])).to.deep.equal({ a: 1 });
-        });
-
-        it('should delete deep items', () => {
-            expect(del({a:['a','b','c']}, ['a',1])).to.deep.equal({a:['a','c']});
-            expect(del([{a:1}], [0,'a'])).to.deep.equal([{}]);
         })
     });
 });
