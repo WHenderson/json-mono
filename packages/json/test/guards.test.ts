@@ -6,7 +6,7 @@ import {
     is_encodable_json,
     is_encodable_json_deep,
     is_encodable_primitive,
-    is_encodable_pure_json_deep,
+    is_encodable_jsonish_deep,
     is_finite_number,
     is_index_number,
     is_integer,
@@ -16,7 +16,7 @@ import {
     is_number,
     is_object,
     is_primitive,
-    is_pure_json_deep,
+    is_jsonish_deep,
     is_safe_integer,
     is_string,
     is_undefined, Json, compare_entries_by_key, JsonObject, JsonArray, is_index_number_or_string, is_index_string
@@ -43,19 +43,19 @@ it('should correctly identify all values', () => {
         is_container,
         is_json,
         is_json_deep,
-        is_pure_json_deep,
+        is_jsonish_deep,
         is_encodable_json,
         is_encodable_json_deep,
-        is_encodable_pure_json_deep,
+        is_encodable_jsonish_deep,
     ];
 
     const guards_json = [
         is_json,
         is_json_deep,
-        is_pure_json_deep,
+        is_jsonish_deep,
         is_encodable_json,
         is_encodable_json_deep,
-        is_encodable_pure_json_deep
+        is_encodable_jsonish_deep
     ];
 
     const values = [
@@ -69,9 +69,9 @@ it('should correctly identify all values', () => {
         { value: Number.MIN_SAFE_INTEGER, truthy: [is_integer, is_safe_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: Number.MAX_SAFE_INTEGER + 1, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: Number.MIN_SAFE_INTEGER - 1, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
-        { value: NaN, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
-        { value: Number.NEGATIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
-        { value: Number.POSITIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_pure_json_deep ]},
+        { value: NaN, truthy: [is_number, is_primitive, is_json, is_json_deep, is_jsonish_deep ]},
+        { value: Number.NEGATIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_jsonish_deep ]},
+        { value: Number.POSITIVE_INFINITY, truthy: [is_number, is_primitive, is_json, is_json_deep, is_jsonish_deep ]},
         { value: Number.MIN_VALUE, truthy: [is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: Number.MAX_VALUE, truthy: [is_integer, is_number, is_finite_number, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: 'xxx', truthy: [is_string, is_primitive, is_encodable_primitive, ...guards_json]},
@@ -79,10 +79,10 @@ it('should correctly identify all values', () => {
         { value: '0123', truthy: [is_string, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: {}, truthy: [is_object, is_container, ...guards_json]},
         { value: { a: undefined }, truthy: [is_object, is_container, is_json, is_json_deep, is_encodable_json, is_encodable_json_deep, ]},
-        { value: { a: NaN }, truthy: [is_object, is_container, is_json, is_json_deep, is_pure_json_deep, is_encodable_json ]},
+        { value: { a: NaN }, truthy: [is_object, is_container, is_json, is_json_deep, is_jsonish_deep, is_encodable_json ]},
         { value: [], truthy: [is_array, is_container, ...guards_json]},
         { value: [undefined], truthy: [is_array, is_container, is_json, is_encodable_json, ]},
-        { value: [NaN], truthy: [is_array, is_container, is_json, is_json_deep, is_pure_json_deep, is_encodable_json ]},
+        { value: [NaN], truthy: [is_array, is_container, is_json, is_json_deep, is_jsonish_deep, is_encodable_json ]},
     ];
 
     values.forEach(({ value, truthy }, index) => {
@@ -152,7 +152,7 @@ it('should fail on recursive structures', () => {
     (<JsonArray>recursive.a)[0] = recursive;
 
     expect(() => is_json_deep(recursive)).toThrow('recursive structure detected');
-    expect(() => is_pure_json_deep(recursive)).toThrow('recursive structure detected');
+    expect(() => is_jsonish_deep(recursive)).toThrow('recursive structure detected');
     expect(() => is_encodable_json_deep(recursive)).toThrow('recursive structure detected');
-    expect(() => is_encodable_pure_json_deep(recursive)).toThrow('recursive structure detected');
+    expect(() => is_encodable_jsonish_deep(recursive)).toThrow('recursive structure detected');
 })

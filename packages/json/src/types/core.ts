@@ -1,5 +1,6 @@
-export type IndexNumber = number & { __tag__: "index" };
-export type IndexString = string & { __tag__: "index" };
+export type IndexNumber = number & { __index__: true };
+export type IndexString = string & { __index__: true };
+export type FiniteNumber = number & { __finite__: true };
 
 export type JsonPrimitive = null | boolean | number | string;
 export type JsonObject = { [prop: string]: Json };

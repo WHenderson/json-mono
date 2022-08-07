@@ -10,11 +10,11 @@ import {is_object} from "./is_object";
  *
  * @param value
  */
-export function is_pure_json_deep<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
-    return _is_pure_json_deep(value, []);
+export function is_jsonish_deep<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
+    return _is_jsonish_deep(value, []);
 }
 
-function _is_pure_json_deep(value: any, stack: JsonContainer[]): value is Json {
+function _is_jsonish_deep(value: any, stack: JsonContainer[]): value is Json {
     if (is_primitive(value))
         return true;
 
@@ -24,10 +24,10 @@ function _is_pure_json_deep(value: any, stack: JsonContainer[]): value is Json {
     const stack_ = [...stack, value];
 
     if (is_array(value))
-        return value.every(element => _is_pure_json_deep(element, stack_));
+        return value.every(element => _is_jsonish_deep(element, stack_));
 
     if (is_object(value))
-        return Object.values(value).every(element => _is_pure_json_deep(element, stack_));
+        return Object.values(value).every(element => _is_jsonish_deep(element, stack_));
 
     return false;
 }
