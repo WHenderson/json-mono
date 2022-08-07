@@ -10,7 +10,7 @@ import {
     traverse_json,
     traverse_jsonish,
     creator_err_object, creator_err_array, creator_throw_ambiguous
-} from "../src/traverse";
+} from "../src";
 import {is_array, is_object} from "../src";
 
 describe('creators', () => {
