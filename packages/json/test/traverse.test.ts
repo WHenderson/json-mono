@@ -3,7 +3,7 @@ import {
     traverse_get,
     traverse_delete,
     traverse_json_update,
-    traverse_jsonish_update
+    traverse_jsonish_update, traverse_has
 } from "../src/traverse";
 
 describe('either json or jsonish', () => {
@@ -85,6 +85,26 @@ describe('either json or jsonish', () => {
             expect(del([{a:1}], [0,'a'])).to.deep.equal([{}]);
         })
     });
+
+    describe('has', () => {
+        const has = traverse_has;
+
+        it('should identify which items exist', () => {
+            expect(has(undefined, [])).toBe(false);
+            expect(has(null, ['x'])).toBe(false);
+            expect(has(true, ['x'])).toBe(false);
+            expect(has(1, ['x'])).toBe(false);
+            expect(has('xxx', ['x'])).toBe(false);
+            expect(has({}, ['x'])).toBe(false);
+            expect(has([], ['x'])).toBe(false);
+            expect(has([], ['-'])).toBe(false);
+            expect(has([], [1])).toBe(false);
+
+            expect(has([], ['length'])).toBe(true);
+            expect(has(['a'], [0])).toBe(true);
+            expect(has({ a: 1}, ['a'])).toBe(true);
+        });
+    })
 });
 
 describe('json', () => {

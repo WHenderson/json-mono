@@ -2,6 +2,7 @@ export * from './types';
 
 export * from './traverse_get';
 export * from './traverse_delete';
+export * from './traverse_has';
 
 export * from './traverse_json';
 export * from './traverse_json_update';

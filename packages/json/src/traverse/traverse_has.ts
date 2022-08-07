@@ -3,38 +3,38 @@ import {Path} from "./types";
 import {is_array, is_container} from "../guards";
 import {parse_index} from "../util";
 
-export function traverse_get(root: MaybeJson, path: Path): MaybeJson;
-export function traverse_get(root: MaybeJsonish, path: Path): MaybeJsonish;
+export function traverse_has(root: MaybeJson, path: Path): boolean;
+export function traverse_has(root: MaybeJsonish, path: Path): boolean;
 
-export function traverse_get(root: MaybeJsonish, path: Path): MaybeJsonish {
+export function traverse_has(root: MaybeJsonish, path: Path): boolean {
     if (path.length === 0)
-        return root;
+        return root !== undefined;
 
     let node = root;
     for (const segment of path) {
         if (!is_container(node))
-            return undefined;
+            return false;
 
         if (is_array(node)) {
             if (segment === 'length' )
                 node = node.length;
             else
             if (segment === '-' )
-                node = undefined;
+                return false;
             else {
                 const index = parse_index(segment);
                 if (index === undefined || index >= node.length)
-                    return undefined;
+                    return false;
 
                 node = node[index];
             }
         }
         else {
             if (!Object.hasOwn(node, segment))
-                return undefined;
+                return false;
 
             node = node[segment];
         }
     }
-    return node;
+    return true;
 }
