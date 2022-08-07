@@ -10,8 +10,7 @@ export function segment_encode(is_private_or_segment: Segment | boolean | Decode
         ? is_private_or_segment
         : [false, is_private_or_segment];
 
-    return (is_private ? ':1' : '') + segment
+    return (is_private ? '~3' : '') + segment
         .replace(/~/g, '~0')
-        .replace(/\//g, '~1')
-        .replace(/:/g, ':0')
+        .replace(/\//g, '~1');
 }

@@ -29,5 +29,4 @@ it('should encode as expected', () => {
     expect(segment_encode('/')).toBe('~1');
     expect(segment_encode('/~')).toBe('~1~0');
     expect(segment_encode('~/')).toBe('~0~1');
-    expect(segment_encode(':~/')).toBe(':0~0~1');
 })
