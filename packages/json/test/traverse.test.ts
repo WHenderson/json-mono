@@ -3,8 +3,47 @@ import {
     traverse_get,
     traverse_delete,
     traverse_json_update,
-    traverse_jsonish_update, traverse_has, traverse_json_set, traverse_jsonish_set, traverse_json, traverse_jsonish
+    traverse_jsonish_update,
+    traverse_has,
+    traverse_json_set,
+    traverse_jsonish_set,
+    traverse_json,
+    traverse_jsonish,
+    creator_err_object, creator_err_array, creator_throw_ambiguous
 } from "../src/traverse";
+import {is_array, is_object} from "../src";
+
+describe('creators', () => {
+    it('should err on creating an object' ,() => {
+        const creator = creator_err_object;
+
+        expect(is_array(creator(0))).toBeTruthy();
+        expect(is_object(creator('0'))).toBeTruthy();
+        expect(is_object(creator('-'))).toBeTruthy();
+        expect(is_object(creator('length'))).toBeTruthy();
+        expect(is_object(creator('a'))).toBeTruthy();
+    });
+
+    it('should err on creating an array' ,() => {
+        const creator = creator_err_array;
+
+        expect(is_array(creator(0))).toBeTruthy();
+        expect(is_array(creator('0'))).toBeTruthy();
+        expect(is_array(creator('-'))).toBeTruthy();
+        expect(is_array(creator('length'))).toBeTruthy();
+        expect(is_object(creator('a'))).toBeTruthy();
+    });
+
+    it('should throw when there is ambiguity' ,() => {
+        const creator = creator_throw_ambiguous;
+
+        expect(is_array(creator(0))).toBeTruthy();
+        expect(() => is_array(creator('0'))).to.throw(Error, 'Unable to infer parent type from key/index');
+        expect(() => is_array(creator('-'))).to.throw(Error, 'Unable to infer parent type from key/index');
+        expect(() => is_array(creator('length'))).to.throw(Error, 'Unable to infer parent type from key/index');
+        expect(is_object(creator('a'))).toBeTruthy();
+    });
+});
 
 describe('either json or jsonish', () => {
     describe('get', () => {
@@ -206,6 +245,12 @@ describe('json', () => {
             expect(set(undefined, ['length'], 2)).to.deep.equal({ "length": 2 });
             expect(set(undefined, ['0'], 2)).to.deep.equal({ "0": 2 });
 
+            expect(set(undefined, ['x'], 2, creator_err_array)).to.deep.equal({ x: 2 });
+            expect(set(undefined, ['-'], 2, creator_err_array)).to.deep.equal([2]);
+            expect(set(undefined, ['length'], 0, creator_err_array)).to.deep.equal([]);
+            expect(() => set(undefined, ['length'], 2, creator_err_array)).to.throw(RangeError, 'Undefined elements not supported')
+            expect(set(undefined, ['0'], 2, creator_err_array)).to.deep.equal([2]);
+
             expect(set(undefined, [0], 2)).to.deep.equal([2]);
             expect(() => set(undefined, [1], 2)).to.throw(RangeError, 'Undefined elements not supported')
 
@@ -343,6 +388,11 @@ describe('jsonish', () => {
             expect(set(undefined, ['-'], 2)).to.deep.equal({ "-": 2 });
             expect(set(undefined, ['length'], 2)).to.deep.equal({ "length": 2 });
             expect(set(undefined, ['0'], 2)).to.deep.equal({ "0": 2 });
+
+            expect(set(undefined, ['x'], 2, creator_err_array)).to.deep.equal({ x: 2 });
+            expect(set(undefined, ['-'], 2, creator_err_array)).to.deep.equal([2]);
+            expect(set(undefined, ['length'], 2, creator_err_array)).to.deep.equal(Array(2));
+            expect(set(undefined, ['0'], 2, creator_err_array)).to.deep.equal([2]);
 
             expect(set(undefined, [0], 2)).to.deep.equal([2]);
             expect(set(undefined, [1], 2)).to.deep.equal([,2]);

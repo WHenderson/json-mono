@@ -12,4 +12,6 @@ export * from './traverse_jsonish';
 export * from './traverse_jsonish_update';
 export * from './traverse_jsonish_set';
 
-
+export * from './creator_err_object';
+export * from './creator_err_array';
+export * from './creator_throw_ambiguous';

@@ -1,10 +1,11 @@
-import {MaybeJson} from "../types";
-import {Path} from "./types";
-import {is_container, is_index_number} from "../guards";
+import {Json, MaybeJson} from "../types";
+import {Path, PathSegment} from "./types";
+import {is_container} from "../guards";
 import {parse_index} from "../util";
 import {_next} from "./_next";
+import {creator_err_object} from "./creator_err_object";
 
-export function traverse_json_update(parent: MaybeJson, path: Path, update: (value: MaybeJson) => MaybeJson): MaybeJson {
+export function traverse_json_update(parent: MaybeJson, path: Path, update: (value: MaybeJson) => MaybeJson, creator?: (next: PathSegment) => Json): MaybeJson {
     if (path.length === 0)
         return update(parent);
 
@@ -12,9 +13,7 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
 
     const result_parent = parent !== undefined
         ? parent
-        : is_index_number(next)
-        ? []
-        : {};
+        : (creator ?? creator_err_object)(next);
 
     const [key, child] = _next(result_parent, next);
 
