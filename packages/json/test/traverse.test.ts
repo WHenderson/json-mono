@@ -3,12 +3,26 @@ import {
     traverse_get,
     traverse_delete,
     traverse_json_update,
-    traverse_jsonish_update, traverse_has
+    traverse_jsonish_update, traverse_has, traverse_json_set, traverse_jsonish_set, traverse_json, traverse_jsonish
 } from "../src/traverse";
 
 describe('either json or jsonish', () => {
     describe('get', () => {
         const get = traverse_get;
+
+        it('should return root for empty path' ,() => {
+            expect(get(undefined, [])).toBe(undefined);
+            expect(get(null, [])).toBe(null);
+            expect(get(true, [])).toBe(true);
+            expect(get(1, [])).toBe(1);
+            expect(get('xxx', [])).toBe('xxx');
+
+            const root_obj = {};
+            expect(get(root_obj, [])).toBe(root_obj);
+
+            const root_arr = [0];
+            expect(get(root_arr, [])).toBe(root_arr);
+        })
 
         it('should return undefined for missing, inaccessible, or invalid paths', () => {
             expect(get(undefined, ['x'])).toBeUndefined();
@@ -108,6 +122,16 @@ describe('either json or jsonish', () => {
 });
 
 describe('json', () => {
+    describe('collection', () => {
+        it('should match collection', () => {
+            expect(traverse_json.has).toBe(traverse_has);
+            expect(traverse_json.get).toBe(traverse_get);
+            expect(traverse_json.delete).toBe(traverse_delete);
+            expect(traverse_json.update).toBe(traverse_json_update);
+            expect(traverse_json.set).toBe(traverse_json_set);
+        });
+    });
+
     describe('update', () => {
         const update = traverse_json_update;
         const set_2 = () => 2;
@@ -172,9 +196,81 @@ describe('json', () => {
             expect(update({ a: 1 }, ['a'], set_undefined)).to.deep.equal({});
         })
     });
+
+    describe('set', () => {
+        const set = traverse_json_set;
+
+        it('should create missing paths where necessary', () => {
+            expect(set(undefined, ['x'], 2)).to.deep.equal({ x: 2 });
+            expect(set(undefined, ['-'], 2)).to.deep.equal({ "-": 2 });
+            expect(set(undefined, ['length'], 2)).to.deep.equal({ "length": 2 });
+            expect(set(undefined, ['0'], 2)).to.deep.equal({ "0": 2 });
+
+            expect(set(undefined, [0], 2)).to.deep.equal([2]);
+            expect(() => set(undefined, [1], 2)).to.throw(RangeError, 'Undefined elements not supported')
+
+            expect(set(undefined, ['x',0,'y'], 2)).to.deep.equal({ x: [{ y: 2 }]});
+        });
+
+        it('should throw when setting invalid paths', () => {
+            expect(() => set(null, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set(true, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set(1, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set('string', ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+        });
+
+        it('should ignore setting invalid paths to undefined', () => {
+            expect(set(undefined, ['x'], undefined)).toBe(undefined);
+            expect(set(null, ['x'], undefined)).toBe(null);
+            expect(set(true, ['x'], undefined)).toBe(true);
+            expect(set(1, ['x'], undefined)).toBe(1);
+            expect(set('string', ['x'], undefined)).toBe('string');
+            expect(set({ a: 1 }, ['x'], undefined)).to.deep.equal({ a: 1});
+            expect(set([], ['x'], undefined)).to.deep.equal([]);
+            expect(set([], [1], undefined)).to.deep.equal([]);
+        })
+
+        it('should allow updating array length directly', () => {
+            expect(set(['a','b','c'], ['length'], 2)).to.deep.equal(['a','b']);
+            expect(() => set([], ['length'], 2)).to.throw(RangeError, 'Undefined elements not supported');
+            expect(() => set([], ['length'], undefined)).to.throw(RangeError, 'Invalid array length');
+            expect(() => set([], ['length'], 1.5)).to.throw(RangeError, 'Invalid array length');
+        });
+
+        it('should allow updating the last member of an array', () => {
+            expect(set(['a','b','c'], ['-'], 2)).to.deep.equal(['a','b','c',2]);
+            expect(set(['a','b','c'], ['-'], undefined)).to.deep.equal(['a','b','c']);
+        });
+
+        it('should allow updating a specific array element', () => {
+            expect(set(['a','b','c'], [1], 2)).to.deep.equal(['a',2,'c']);
+            expect(set(['a','b','c'], [3], 2)).to.deep.equal(['a','b','c', 2]);
+            expect(() => set(['a','b','c'], [4], 2)).to.throw(RangeError, 'Undefined elements not supported');
+
+            expect(set(['a','b','c'], [1], undefined)).to.deep.equal(['a','c']);
+            expect(set(['a','b','c'], [3], undefined)).to.deep.equal(['a','b','c']);
+            expect(set(['a','b','c'], [4], undefined)).to.deep.equal(['a','b','c']);
+        });
+
+        it('should allow updating object members', () => {
+            expect(set({ a: 1 }, ['a'], 2)).to.deep.equal({ a: 2 });
+            expect(set({ a: 1 }, ['b'], 2)).to.deep.equal({ a: 1, b: 2 });
+            expect(set({ a: 1 }, ['a'], undefined)).to.deep.equal({});
+        });
+    });
 });
 
 describe('jsonish', () => {
+    describe('collection', () => {
+        it('should match collection', () => {
+            expect(traverse_jsonish.has).toBe(traverse_has);
+            expect(traverse_jsonish.get).toBe(traverse_get);
+            expect(traverse_jsonish.delete).toBe(traverse_delete);
+            expect(traverse_jsonish.update).toBe(traverse_jsonish_update);
+            expect(traverse_jsonish.set).toBe(traverse_jsonish_set);
+        });
+    });
+
     describe('update', () => {
         const update = traverse_jsonish_update;
         const set_2 = () => 2;
@@ -236,6 +332,67 @@ describe('jsonish', () => {
             expect(update({ a: 1 }, ['a'], set_2)).to.deep.equal({ a: 2 });
             expect(update({ a: 1 }, ['b'], set_2)).to.deep.equal({ a: 1, b: 2 });
             expect(update({ a: 1 }, ['a'], set_undefined)).to.deep.equal({ a: undefined });
+        })
+    });
+
+    describe('set', () => {
+        const set = traverse_jsonish_set;
+
+        it('should create missing paths where necessary', () => {
+            expect(set(undefined, ['x'], 2)).to.deep.equal({ x: 2 });
+            expect(set(undefined, ['-'], 2)).to.deep.equal({ "-": 2 });
+            expect(set(undefined, ['length'], 2)).to.deep.equal({ "length": 2 });
+            expect(set(undefined, ['0'], 2)).to.deep.equal({ "0": 2 });
+
+            expect(set(undefined, [0], 2)).to.deep.equal([2]);
+            expect(set(undefined, [1], 2)).to.deep.equal([,2]);
+
+            expect(set(undefined, ['x',0,'y'], 2)).to.deep.equal({ x: [{ y: 2 }]});
+        });
+
+        it('should throw when setting invalid paths', () => {
+            expect(() => set(null, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set(true, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set(1, ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+            expect(() => set('string', ['x'], 2)).to.throw(Error, 'Cannot set invalid path');
+        });
+
+        it('should ignore setting invalid paths to undefined', () => {
+            expect(set(null, ['x'], undefined)).toBe(null);
+            expect(set(true, ['x'], undefined)).toBe(true);
+            expect(set(1, ['x'], undefined)).toBe(1);
+            expect(set('string', ['x'], undefined)).toBe('string');
+            expect(set({ a: 1 }, ['x'], undefined)).to.deep.equal({ a: 1, x: undefined });
+            expect(set([], ['x'], undefined)).to.deep.equal([]);
+            expect(set([], [1], undefined)).to.deep.equal([, undefined]);
+        })
+
+        it('should allow updating array length directly', () => {
+            expect(set(['a','b','c'], ['length'], 2)).to.deep.equal(['a','b']);
+            expect(set([], ['length'], 2)).to.deep.equal(Array(2));
+            expect(() => set([], ['length'], undefined)).to.throw(RangeError, 'Invalid array length');
+            expect(() => set([], ['length'], 1.5)).to.throw(RangeError, 'Invalid array length');
+        });
+
+        it('should allow updating the last member of an array', () => {
+            expect(set(['a','b','c'], ['-'], 2)).to.deep.equal(['a','b','c',2]);
+            expect(set(['a','b','c'], ['-'], undefined)).to.deep.equal(['a','b','c', undefined]);
+        });
+
+        it('should allow updating a specific array element', () => {
+            expect(set(['a','b','c'], [1], 2)).to.deep.equal(['a',2,'c']);
+            expect(set(['a','b','c'], [3], 2)).to.deep.equal(['a','b','c', 2]);
+            expect(set(['a','b','c'], [4], 2)).to.deep.equal(['a','b','c',,2]);
+
+            expect(set(['a','b','c'], [1], undefined)).to.deep.equal(['a',undefined,'c']);
+            expect(set(['a','b','c'], [3], undefined)).to.deep.equal(['a','b','c', undefined]);
+            expect(set(['a','b','c'], [4], undefined)).to.deep.equal(['a','b','c',, undefined]);
+        });
+
+        it('should allow updating object members', () => {
+            expect(set({ a: 1 }, ['a'], 2)).to.deep.equal({ a: 2 });
+            expect(set({ a: 1 }, ['b'], 2)).to.deep.equal({ a: 1, b: 2 });
+            expect(set({ a: 1 }, ['a'], undefined)).to.deep.equal({ a: undefined });
         })
     });
 });
