@@ -18,7 +18,7 @@ export function clone(value: MaybeJsonish): MaybeJson;
 
 export function clone(value: MaybeJsonish): MaybeJson {
     if (value === undefined || is_primitive(value))
-        return value!;
+        return value;
 
     if (is_array(value))
         return value.map(element => clone(element));
@@ -26,7 +26,6 @@ export function clone(value: MaybeJsonish): MaybeJson {
     return Object.fromEntries(
         Object
             .entries(value)
-            .filter(([_key, member]) => member !== undefined)
             .map(([key, member]) => <[string, Json]>[key, clone(member)])
     );
 }

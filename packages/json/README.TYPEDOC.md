@@ -33,18 +33,45 @@ Contains typescript guards for identifying type information.
 * {@link is_array} returns true if value is an array
 * {@link is_container} returns true if either {@link is_object} or {@link is_array} is true
 * {@link is_json} returns true if a shallow check of value confirms a json type 
-* {@link is_json_deep} returns true if a deep check of value confirms
-* {@link is_encodable_json} returns true if
-* {@link is_encodable_json_deep} returns true if
-* {@link is_equal_deep} returns true if
-
-TODO: equal_deep needs jsonish equivalent where keys with undefined != missing key
-TODO: actually 3 equals, undefined === missing, undefined !== missing, and no check for undefined (assumed everything is defined)
+* {@link is_json_deep} returns true if a deep check of value confirms every contained value is a json type
+* {@link is_encodable_json} returns true if a shallow check of value confirms it is an encodable json type
+* {@link is_encodable_json_deep} returns true if a deep check of value confirms every contained value is an encodable json type
+* {@link is_equal_deep} returns true if a deep comparison of values proves equality
 
 ### Access
+
+* {@link object_has_key} returns true if object has an ownProperty with the given name
+* {@link object_has_defined_key} returns true if object has an ownProperty with the given name whose value is not undefined 
+* {@link object_member} returns the value of the given ownProperty
+* {@link object_entries} returns all ownProperty entries of value
+* {@link object_defined_entries} returns all ownProperty entries of value whose values are not undefined 
+* {@link object_keys} returns all ownProperty keys of value
+* {@link object_defined_keys} returns all ownProperty keys of value whose values are not undefined
+
+* {@link array_has_index} returns true if array has the given index 
+* {@link array_element} returns the value of the given index
+
+* {@link container_has_key_or_index} returns true if value has the given index/key
+* {@link container_has_defined_key_or_index} returns true if value has the given index/key, and it's value is not undefined
+* {@link container_item} return the value of the given key/index
+
 ### Traversal
+
+Provides methods for the following activities:
+* {@link traverse_json.has}, {@link traverse_jsonish.has} returns true if the given path exists
+* {@link traverse_json.get}, {@link traverse_jsonish.get} returns the value resulting from traversing the given path
+* {@link traverse_json.set}, {@link traverse_jsonish.set} traverses the given path, creating objects and arrays as necessary, and sets the leaf node value
+* {@link traverse_json.update}, {@link traverse_jsonish.update} traverses the given path, creating objects and arrays as necessary, and updates the leaf node value
+* {@link traverse_json.delete}, {@link traverse_jsonish.delete} traverses the given path, deleting the leaf node if it exists
+
 ### Utilities
 
+* {@link clone}
+
+* {@link parse_index}
+* {@link parse_index_string}
+
+* {@link object_assign}
 
 * {@link constant} - Create a {@link Readable} store with a fixed value
 * {@link readable} - Create a {@link Readable} store
@@ -69,136 +96,16 @@ TODO: actually 3 equals, undefined === missing, undefined !== missing, and no ch
 
 ```bash
 # pnpm
-$ pnpm add @crikey/stores-base
+$ pnpm add @crikey/json
 
 # npm
-$ npm add @crikey/stores-base
+$ npm add @crikey/json
 
 # yarn
-$ yarn add @crikey/stores-base
+$ yarn add @crikey/json
 ```
 
 ## Usage
 
-This package is predominantly intended for internal use.
-
-See individual APIs for strict usage instructions or browse the unit tests and usage from other packages in the mono repository. 
-
-## Differences with Svelte stores
-
-### Definable trigger semantics
-Svelte stores use a greedy change detection system to, whereby complex types are always considered to have changed.
-
-e.g.
-```ts
-import { writable } from 'svelte/store';
-
-const value = {};
-const store = writable(value);
-store.subscribe(value => console.log('changed'));
-store.set(value);
-
-// > changed
-// > changed
-```
-
-`@crikey/stores-base` stores allow for user defined trigger functions. This trigger function is
-called for each {@link Writable.set} and {@link Writable.update} call, allowing for user defined 
-comparisons between the old value and the new value to determine if subscribers should be notified.
-
-e.g.
-{@codeblock ./examples/writable.test.ts#example-writable-trigger}
-
-### Asynchronous `update` as well as `set`
-
-@crikey stores extend the {@link readable}, {@link writable}, and {@link derive} signatures
-allowing calculations to asynchronously `update` as well as `set` their values.
-
-e.g.
-{@codeblock ./examples/derive.test.ts#example-derive-async-update}
-
-### Subscriber execution order
-In order to ensure reliable and predictable execution order for subscribers, stores utilize an internal action queue.
-Whenever a store is changed, its active subscriptions are pushed onto a queue and executed in order. If more changes
-result in more subscriptions being pushed onto the queue, they are added to the end of the current queue and everything
-continues to be executed in FIFO order.
-
-Svelte does not expose this queue and thus extensions are not able to maintain a pure FIFO order when mixed.
-
-As a natural result, when mixing svelte stores and `@crikey/stores`, execution order will not be strictly FIFO.
-
-### Unlimited dependencies
-To avoid erroneous recalculations, {@link derive} store types keep track of which inputs are being
-recalculated (see _Premature evaluation_ below). `@crikey/stores-base` determines the most efficient approach
-to this problem based on the number of inputs required.
-
-`svelte` store implementation details use a fixed tracking system allowing for a maximum of 32 inputs. Additional
-inputs beyond this number will begin to behave incorrectly.
-
-Note that this is an implementation detail and as such is likely to be improved at some point.
-
-### Premature evaluation
-Ensuring a derived store value is evaluated against up-to-date inputs is non-trivial.
-
-From the below examples, svelte and @crikey are comparable except for (e) where svelte stores may erroneously calculate
-a derived value based off of atrophied inputs.
-
-Some examples:
-
-_a) Simple single dependency_
-* As soon as `a` changes, `d` is recalculated.
-```mermaid
-graph TD
-    a --> d
-```
-
-_b) Simple dual dependency_
-* As soon as `a` or `b` changes, `d` is recalculated.
-```mermaid
-graph TD
-    a --> d
-    b --> d
-```
-
-_c) Simple chained dependency_
-* As soon as `a` changes, `b` is recalculated.
-* As soon as `b` or `c` changes, `d` is recalculated.
-```mermaid
-graph TD
-    a --> b --> d
-          c --> d
-```
-
-_d) Diamond dependency_
-* As soon as `a` changes, `b` and `c` are recalculated.
-* As soon as `b` or `c` changes, `d` is recalculated.
-
-```mermaid
-graph TD
-    a --> b --> d
-    a --> c --> d
-```
-
-e) Diamond+ dependency
-* As soon as `a` changes, `b`, `c`, and `d` are recalculated.
-* As soon as `b` or `c` changes, `d` is recalculated.
-
-_svelte_:
-A change to `a` may result in `d` being recalculated multiple times, sometimes using partially atrophied data from its
-dependencies.
-
-_@crikey_:
-A change to `a` will at most result in `d` being recalculated once, after all its dependencies have been resolved.
-```mermaid
-graph TD
-    a       --> d
-    a --> b --> d
-    a --> c --> d
-```
-
-### Infinite recursion checks
-Subscribing to a store from within its start function triggers a RecursionError rather returning the initial_value
-
-### Error handling
-Uncaught errors in subscribers, start functions or derivation functions can now be handled via @{link set_store_runner}
-
+All API functions have simple clean semantics and should be easy to understand.
+Examples of each API can be found under test.

@@ -111,7 +111,7 @@ describe('is_equal_deep', () => {
         expect(is_equal_deep([], {})).toBeFalsy();
     });
     it('should compare arrays, deep', () => {
-        expect(is_equal_deep([{}], [{}])).toBeTruthy();
+        expect(is_equal_deep([{}, undefined], [{}, undefined])).toBeTruthy();
     });
     it('should compare array length', () => {
         expect(is_equal_deep([], [1,2,3])).toBeFalsy();
@@ -121,10 +121,12 @@ describe('is_equal_deep', () => {
         expect(is_equal_deep({}, [])).toBeFalsy();
     });
     it('should compare objects, ignoring undefined', () => {
-        expect(is_equal_deep({a: undefined}, { b: undefined})).toBeTruthy();
+        expect(is_equal_deep({a: undefined}, { b: undefined})).toBeFalsy();
+        expect(is_equal_deep({a: undefined}, { b: undefined}, { filter: true })).toBeTruthy();
     });
     it('should compare objects, ignoring order', () => {
-        expect(is_equal_deep({a: 1, b:2, c:3, d:4}, {b: 2, a: 1, d:4, c:3})).toBeTruthy();
+        expect(is_equal_deep({a: 1, b:2, c:3, d:4}, {b: 2, a: 1, d:4, c:3})).toBeFalsy();
+        expect(is_equal_deep({a: 1, b:2, c:3, d:4}, {b: 2, a: 1, d:4, c:3}, { sort: true })).toBeTruthy();
     });
     it('should compare object key count', () => {
         expect(is_equal_deep({}, {a:1})).toBeFalsy();
