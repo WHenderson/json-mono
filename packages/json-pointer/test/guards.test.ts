@@ -1,5 +1,5 @@
 import {expect, it} from "vitest";
-import {is_absolute, is_pointer, is_relative, is_relative_iref, is_relative_pure} from "../src";
+import {is_absolute, is_pointer, is_relative, is_relative_iref, is_relative_only, is_relative_pure} from "../src";
 import {inspect} from "node:util";
 
 it('should correctly identify example pointers', () => {
@@ -8,7 +8,8 @@ it('should correctly identify example pointers', () => {
         is_absolute,
         is_relative,
         is_relative_iref,
-        is_relative_pure
+        is_relative_pure,
+        is_relative_only
     ];
 
     const values = [
@@ -24,14 +25,14 @@ it('should correctly identify example pointers', () => {
         { value: '', truthy: [is_pointer, is_absolute] },
         { value: '/', truthy: [is_pointer, is_absolute] },
         { value: '/a/b/c', truthy: [is_pointer, is_absolute] },
-        { value: '0', truthy: [is_pointer, is_relative, is_relative_pure] },
+        { value: '0', truthy: [is_pointer, is_relative, is_relative_pure, is_relative_only] },
         { value: '0/', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '0/a/b/c', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '0#', truthy: [is_pointer, is_relative, is_relative_iref] },
         { value: '00', truthy: [] },
         { value: '01', truthy: [] },
         { value: '99999999999999999999999999999999999999999999999', truthy: [] },
-        { value: '123', truthy: [is_pointer, is_relative, is_relative_pure] },
+        { value: '123', truthy: [is_pointer, is_relative, is_relative_pure, is_relative_only] },
         { value: '123/', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '123/a/b/c', truthy: [is_pointer, is_relative, is_relative_pure] },
         { value: '123#', truthy: [is_pointer, is_relative, is_relative_iref] },

@@ -5,6 +5,7 @@ export * from './is_absolute';
 export * from './is_relative';
 export * from './is_relative_pure';
 export * from './is_relative_iref';
+export * from './is_relative_only';
 
 export * from './pointer-decoding-error';
 export * from './pointer-encoding-error';
@@ -15,10 +16,12 @@ export * from './absolute_encoded';
 export * from './absolute_decoded';
 export * from './relative_encoded';
 export * from './relative_decoded';
+export * from './relative_iref';
 
 export * from './join_pointer';
 export * from './join_encoded_segments';
 export * from './join_decoded_segments';
+export * from './join_iref';
 
 export * from './segment_encode';
 export * from './segment_decode';

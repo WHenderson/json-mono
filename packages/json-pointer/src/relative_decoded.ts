@@ -7,5 +7,5 @@ export function relative_decoded(relative: number, ...segments: Segment[]) : Poi
     if (!is_index_number(relative))
         throw new PointerEncodingError('Invalid relative index');
 
-    return `${relative}#${join_decoded_segments('', ...segments)}`;
+    return `${relative}${join_decoded_segments('', ...segments)}`;
 }

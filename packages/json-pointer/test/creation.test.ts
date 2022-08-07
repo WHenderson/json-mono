@@ -5,7 +5,7 @@ import {
     pointer_decoded,
     pointer_encoded, PointerEncodingError,
     relative_decoded,
-    relative_encoded
+    relative_encoded, relative_iref
 } from "../src";
 
 it('should create expected values', () => {
@@ -24,12 +24,15 @@ it('should create expected values', () => {
     expect(absolute_encoded('a','b','~')).toBe('/a/b/~');
     expect(absolute_decoded('a','b','~')).toBe('/a/b/~0');
 
-    expect(pointer_encoded(123, 'a','b','~')).toBe('123#/a/b/~');
-    expect(pointer_decoded(123, 'a','b','~')).toBe('123#/a/b/~0');
+    expect(pointer_encoded(123, 'a','b','~')).toBe('123/a/b/~');
+    expect(pointer_decoded(123, 'a','b','~')).toBe('123/a/b/~0');
 
-    expect(relative_encoded(123, 'a','b','~')).toBe('123#/a/b/~');
-    expect(relative_decoded(123, 'a','b','~')).toBe('123#/a/b/~0');
+    expect(relative_encoded(123, 'a','b','~')).toBe('123/a/b/~');
+    expect(relative_decoded(123, 'a','b','~')).toBe('123/a/b/~0');
 
     expect(() => relative_encoded(-1, 'a','b','~')).to.throw(PointerEncodingError, 'Invalid relative index');
     expect(() => relative_decoded(-1, 'a','b','~')).to.throw(PointerEncodingError, 'Invalid relative index');
+
+    expect(relative_iref(123)).toBe('123#');
+    expect(() => relative_iref(-1)).to.throw(PointerEncodingError, 'Invalid relative index');
 });

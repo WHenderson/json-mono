@@ -1,4 +1,4 @@
-import {Pointer} from "./types";
+import {RelativePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
 /**
@@ -6,7 +6,7 @@ import {parse_index_string} from "@crikey/json";
  * @see [Relative JSON Pointers](https://tools.ietf.org/id/draft-handrews-relative-json-pointer-00.html#rfc.section.3)
  * @param pointer
  */
-export function is_relative(pointer: any) : pointer is Pointer {
+export function is_relative(pointer: any) : pointer is RelativePointer {
     if (typeof pointer !== 'string')
         return false;
 
