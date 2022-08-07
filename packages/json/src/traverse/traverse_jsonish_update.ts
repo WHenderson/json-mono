@@ -83,7 +83,16 @@ export function traverse_jsonish_update(parent: any, path: Path, update: (value:
     }
     else
     {
-        (<any>result_parent)[key] = result_child;
+        Object.defineProperty(
+            result_parent,
+            key,
+            {
+                value: result_child,
+                writable: true,
+                enumerable: true,
+                configurable: true
+            }
+        );
     }
     return result_parent;
 }

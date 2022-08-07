@@ -36,25 +36,21 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
                     undefined
                 ]
             }
-            else
-            if (is_index_number(next)) {
-                if (next > result_parent.length)
+            else {
+                const index = parse_index(next);
+                if (index === undefined)
+                    throw new Error('invalid path');
+
+                if (index > result_parent.length)
                     throw new Error('cannot create sparse array');
 
                 return [
-                    next,
-                    (next < result_parent.length)
-                    ? result_parent[next]
+                    index,
+                    (index < result_parent.length)
+                    ? result_parent[index]
                     : undefined
                 ];
             }
-            else
-            if (typeof next === 'string') {
-                const index = parse_index_string(next);
-                if (index !== undefined && index < result_parent.length)
-                    return [index, result_parent[index]];
-            }
-            throw new Error('invalid path');
         }
         else {
             return [
@@ -109,7 +105,16 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
     }
     else
     {
-        (<any>result_parent)[key] = result_child;
+        Object.defineProperty(
+            result_parent,
+            key,
+            {
+                value: result_child,
+                writable: true,
+                enumerable: true,
+                configurable: true
+            }
+        );
     }
     return result_parent;
 }

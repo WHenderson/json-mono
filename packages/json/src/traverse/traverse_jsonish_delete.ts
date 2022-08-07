@@ -104,7 +104,16 @@ export function traverse_jsonish_delete(parent: any, path: Path): any {
     }
     else
     {
-        (<any>result_parent)[key] = result_child;
+        Object.defineProperty(
+            result_parent,
+            key,
+            {
+                value: result_child,
+                writable: true,
+                enumerable: true,
+                configurable: true
+            }
+        );
     }
     return result_parent;
 }

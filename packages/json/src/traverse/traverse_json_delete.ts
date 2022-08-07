@@ -89,7 +89,7 @@ export function traverse_json_delete(parent: MaybeJson, path: Path): MaybeJson {
         if (key === 'length') {
             const length = parse_index(result_child);
             if (length === undefined)
-                throw new Error('invalid path');
+                throw new RangeError('Invalid array length');
             if (length > result_parent.length)
                 throw new Error('cannot increase array length');
             result_parent.length = length;
@@ -106,7 +106,16 @@ export function traverse_json_delete(parent: MaybeJson, path: Path): MaybeJson {
     }
     else
     {
-        (<any>result_parent)[key] = result_child;
+        Object.defineProperty(
+            result_parent,
+            key,
+            {
+                value: result_child,
+                writable: true,
+                enumerable: true,
+                configurable: true
+            }
+        );
     }
     return result_parent;
 }
