@@ -11,6 +11,8 @@ it('should join encoded segments', () => {
 
     // Note that encoding is not checked
     expect(join_encoded_segments('', 'abc', '~0', '~1', '~3', ':3', ':')).toBe('/abc/~0/~1/~3/:3/:');
+
+    expect(join_encoded_segments('/abc')).toBe('/abc');
 });
 
 it('should join pointers', () => {
