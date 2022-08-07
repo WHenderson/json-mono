@@ -1,18 +1,13 @@
 import {MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_container, is_index_number} from "../guards";
-import {parse_index, parse_index_string} from "../util";
+import {parse_index} from "../util";
 
-export function traverse_jsonish_update(root: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish): MaybeJsonish;
-
-export function traverse_jsonish_update(parent: any, path: Path, update: (value: any) => any): any {
+export function traverse_jsonish_update(parent: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish): MaybeJsonish {
     if (path.length === 0)
         return update(parent);
 
     const [next, ...remainder] = path;
-
-    if (parent !== undefined && !is_container(parent))
-        throw new Error('invalid path');
 
     const result_parent = parent !== undefined
         ? parent
@@ -21,9 +16,13 @@ export function traverse_jsonish_update(parent: any, path: Path, update: (value:
         : {};
 
     const [key, child] = (() => {
-        if (typeof next === 'symbol')
-            return [next, result_parent[next]];
-
+        if (!is_container(result_parent)) {
+            return [
+                undefined,
+                undefined
+            ]
+        }
+        else
         if (Array.isArray(result_parent)) {
             if (next === 'length') {
                 return [
@@ -38,48 +37,53 @@ export function traverse_jsonish_update(parent: any, path: Path, update: (value:
                     undefined
                 ]
             }
-            else
-            if (is_index_number(next)) {
+            else {
+                const index = parse_index(next);
+                if (index === undefined) {
+                    return [
+                        undefined,
+                        undefined
+                    ]
+                }
+
                 return [
-                    next,
-                    (next < result_parent.length)
-                        ? result_parent[next]
-                        : undefined
+                    index,
+                    (index < result_parent.length)
+                    ? result_parent[index]
+                    : undefined
                 ];
             }
-            else
-            if (typeof next === 'string') {
-                const index = parse_index_string(next);
-                if (index !== undefined && index < result_parent.length)
-                    return [index, result_parent[index]];
-            }
-            throw new Error('invalid path');
         }
         else {
+            const key = `${next}`;
             return [
-                next,
-                Object.hasOwn(result_parent, next)
-                ? result_parent[next]
-                : undefined
+                key,
+                Object.hasOwn(result_parent, key)
+                    ? result_parent[key]
+                    : undefined
             ];
         }
     })();
 
     const result_child = traverse_jsonish_update(child, remainder, update);
+    if (key === undefined || !is_container(result_parent)) {
+        if (result_child !== undefined)
+            throw new Error('Cannot set invalid path');
+        return parent;
+    }
+    else
     if (Array.isArray(result_parent)) {
         if (key === 'length') {
             const length = parse_index(result_child);
             if (length === undefined)
-                throw new Error('invalid path');
-            if (length > result_parent.length)
-                throw new Error('cannot increase array length');
+                throw new RangeError('Invalid array length');
+
             result_parent.length = length;
         }
-        else
-        if (is_index_number(key))
-            result_parent[key] = result_child;
-        else
-            throw new Error('invalid path');
+        else {
+            const index = <number>key;
+            result_parent[index] = result_child;
+        }
     }
     else
     {

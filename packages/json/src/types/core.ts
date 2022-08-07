@@ -10,9 +10,9 @@ export type Json = JsonPrimitive | JsonContainer;
 export type Maybe<T> = T | undefined;
 
 export type JsonObjectish = { [prop: string]: MaybeJsonish };
-export type JsonArrayish = (JsonPrimitive | JsonContainerish)[];
+export type JsonArrayish = Jsonish[];
 export type JsonContainerish = JsonObjectish | JsonArrayish;
-export type Jsonish = JsonPrimitive | JsonContainerish;
+export type Jsonish = MaybeJsonPrimitive | MaybeJsonContainerish;
 
 export type MaybeJsonObjectish = Maybe<JsonObjectish>;
 export type MaybeJsonArrayish = Maybe<JsonArrayish>;

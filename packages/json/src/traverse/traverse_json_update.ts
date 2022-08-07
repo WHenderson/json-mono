@@ -1,16 +1,13 @@
 import {MaybeJson} from "../types";
 import {Path} from "./types";
 import {is_container, is_index_number} from "../guards";
-import {parse_index, parse_index_string} from "../util";
+import {parse_index} from "../util";
 
 export function traverse_json_update(parent: MaybeJson, path: Path, update: (value: MaybeJson) => MaybeJson): MaybeJson {
     if (path.length === 0)
         return update(parent);
 
     const [next, ...remainder] = path;
-
-    if (parent !== undefined && !is_container(parent))
-        throw new Error('invalid path');
 
     const result_parent = parent !== undefined
         ? parent
@@ -19,9 +16,13 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
         : {};
 
     const [key, child] = (() => {
-        if (typeof next === 'symbol')
-            return [next, (<any>result_parent)[next]];
-
+        if (!is_container(result_parent)) {
+            return [
+                undefined,
+                undefined
+            ]
+        }
+        else
         if (Array.isArray(result_parent)) {
             if (next === 'length') {
                 return [
@@ -38,11 +39,12 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
             }
             else {
                 const index = parse_index(next);
-                if (index === undefined)
-                    throw new Error('invalid path');
-
-                if (index > result_parent.length)
-                    throw new Error('cannot create sparse array');
+                if (index === undefined) {
+                    return [
+                        undefined,
+                        undefined
+                    ]
+                }
 
                 return [
                     index,
@@ -53,10 +55,11 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
             }
         }
         else {
+            const key = `${next}`;
             return [
-                next,
-                Object.hasOwn(result_parent, next)
-                ? result_parent[next]
+                key,
+                Object.hasOwn(result_parent, key)
+                ? result_parent[key]
                 : undefined
             ];
         }
@@ -64,44 +67,44 @@ export function traverse_json_update(parent: MaybeJson, path: Path, update: (val
 
     const result_child = traverse_json_update(child, remainder, update);
     if (result_child === undefined) {
+        if (key === undefined || !is_container(result_parent))
+            return parent;
+        else
         if (parent !== result_parent)
             return undefined;
-
-        if (typeof key === 'symbol') {
-            delete (<any>result_parent)[key];
-        }
         else
         if (Array.isArray(result_parent)) {
             if (key === 'length')
-                throw new Error('cannot delete array length');
-            if (!is_index_number(key))
-                throw new Error('invalid path');
+                throw new RangeError('Invalid array length');
 
-            result_parent.splice(key)
+            result_parent.splice(<number>key, 1)
         }
         else {
             delete result_parent[key];
         }
     }
     else
+    if (key === undefined || !is_container(result_parent)) {
+        throw new Error('Cannot set invalid path');
+    }
+    else
     if (Array.isArray(result_parent)) {
         if (key === 'length') {
             const length = parse_index(result_child);
             if (length === undefined)
-                throw new Error('invalid path');
+                throw new RangeError('Invalid array length');
             if (length > result_parent.length)
-                throw new Error('cannot increase array length');
+                throw new RangeError('Undefined elements not supported');
+
             result_parent.length = length;
         }
-        else
-        if (is_index_number(key)) {
-            if (key > result_parent.length)
-                throw new Error('cannot create sparse array');
+        else {
+            const index = <number>key;
+            if (index > result_parent.length)
+                throw new RangeError('Undefined elements not supported');
 
-            result_parent[key] = result_child;
+            result_parent[index] = result_child;
         }
-        else
-            throw new Error('invalid path');
     }
     else
     {

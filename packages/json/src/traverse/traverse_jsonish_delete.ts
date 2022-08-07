@@ -1,29 +1,29 @@
 import {MaybeJsonish} from "../types";
 import {Path} from "./types";
-import {is_container, is_index_number} from "../guards";
-import {parse_index, parse_index_string} from "../util";
+import {is_container} from "../guards";
+import {parse_index} from "../util";
 
 export function traverse_jsonish_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
 
-export function traverse_jsonish_delete(parent: any, path: Path): any {
+export function traverse_jsonish_delete(parent: MaybeJsonish, path: Path): MaybeJsonish {
     if (path.length === 0)
         return undefined;
 
+    if (!is_container(parent))
+        return parent;
+
     const [next, ...remainder] = path;
 
-    if (parent !== undefined && !is_container(parent))
-        throw new Error('invalid path');
-
-    const result_parent = parent !== undefined
-        ? parent
-        : is_index_number(next)
-        ? []
-        : {};
+    const result_parent = parent;
 
     const [key, child] = (() => {
-        if (typeof next === 'symbol')
-            return [next, result_parent[next]];
-
+        if (!is_container(result_parent)) {
+            return [
+                undefined,
+                undefined
+            ]
+        }
+        else
         if (Array.isArray(result_parent)) {
             if (next === 'length') {
                 return [
@@ -38,29 +38,30 @@ export function traverse_jsonish_delete(parent: any, path: Path): any {
                     undefined
                 ]
             }
-            else
-            if (is_index_number(next)) {
+            else {
+                const index = parse_index(next);
+                if (index === undefined) {
+                    return [
+                        undefined,
+                        undefined
+                    ]
+                }
+
                 return [
-                    next,
-                    (next < result_parent.length)
-                        ? result_parent[next]
+                    index,
+                    (index < result_parent.length)
+                        ? result_parent[index]
                         : undefined
                 ];
             }
-            else
-            if (typeof next === 'string') {
-                const index = parse_index_string(next);
-                if (index !== undefined && index < result_parent.length)
-                    return [index, result_parent[index]];
-            }
-            throw new Error('invalid path');
         }
         else {
+            const key = `${next}`;
             return [
-                next,
-                Object.hasOwn(result_parent, next)
-                ? result_parent[next]
-                : undefined
+                key,
+                Object.hasOwn(result_parent, key)
+                    ? result_parent[key]
+                    : undefined
             ];
         }
     })();
@@ -68,52 +69,19 @@ export function traverse_jsonish_delete(parent: any, path: Path): any {
     if (child === undefined)
         return parent;
 
-    const result_child = traverse_jsonish_delete(child, remainder);
-    if (result_child === undefined) {
-        if (typeof key === 'symbol') {
-            delete (<any>result_parent)[key];
-        }
-        else
+    if (remainder.length === 0) {
         if (Array.isArray(result_parent)) {
             if (key === 'length')
-                throw new Error('cannot delete array length');
-            if (!is_index_number(key))
-                throw new Error('invalid path');
+                throw new RangeError('Invalid array length');
 
-            result_parent.splice(key)
+            result_parent.splice(<number>key, 1)
         }
         else {
             delete result_parent[key];
         }
     }
     else
-    if (Array.isArray(result_parent)) {
-        if (key === 'length') {
-            const length = parse_index(result_child);
-            if (length === undefined)
-                throw new Error('invalid path');
-            if (length > result_parent.length)
-                throw new Error('cannot increase array length');
-            result_parent.length = length;
-        }
-        else
-        if (is_index_number(key))
-            result_parent[key] = result_child;
-        else
-            throw new Error('invalid path');
-    }
-    else
-    {
-        Object.defineProperty(
-            result_parent,
-            key,
-            {
-                value: result_child,
-                writable: true,
-                enumerable: true,
-                configurable: true
-            }
-        );
-    }
+        traverse_jsonish_delete(child, remainder);
+
     return result_parent;
 }

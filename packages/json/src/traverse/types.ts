@@ -1,2 +1,2 @@
-export type PathSegment = PropertyKey;
+export type PathSegment = string | number;
 export type Path = PathSegment[];

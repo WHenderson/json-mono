@@ -1,27 +1,27 @@
 import {MaybeJson} from "../types";
 import {Path} from "./types";
-import {is_container, is_index_number} from "../guards";
-import {parse_index, parse_index_string} from "../util";
+import {is_container} from "../guards";
+import {parse_index} from "../util";
 
 export function traverse_json_delete(parent: MaybeJson, path: Path): MaybeJson {
     if (path.length === 0)
         return undefined;
 
+    if (!is_container(parent))
+        return parent;
+
     const [next, ...remainder] = path;
 
-    if (parent !== undefined && !is_container(parent))
-        throw new Error('invalid path');
-
-    const result_parent = parent !== undefined
-        ? parent
-        : is_index_number(next)
-            ? []
-            : {};
+    const result_parent = parent;
 
     const [key, child] = (() => {
-        if (typeof next === 'symbol')
-            return [next, (<any>result_parent)[next]];
-
+        if (!is_container(result_parent)) {
+            return [
+                undefined,
+                undefined
+            ]
+        }
+        else
         if (Array.isArray(result_parent)) {
             if (next === 'length') {
                 return [
@@ -36,87 +36,51 @@ export function traverse_json_delete(parent: MaybeJson, path: Path): MaybeJson {
                     undefined
                 ]
             }
-            else
-            if (is_index_number(next)) {
+            else {
+                const index = parse_index(next);
+                if (index === undefined) {
+                    return [
+                        undefined,
+                        undefined
+                    ]
+                }
+
                 return [
-                    next,
-                    (next < result_parent.length)
-                        ? result_parent[next]
-                        : undefined
+                    index,
+                    (index < result_parent.length)
+                    ? result_parent[index]
+                    : undefined
                 ];
             }
-            else
-            if (typeof next === 'string') {
-                const index = parse_index_string(next);
-                if (index !== undefined && index < result_parent.length)
-                    return [index, result_parent[index]];
-            }
-            throw new Error('invalid path');
         }
         else {
+            const key = `${next}`;
             return [
-                next,
-                Object.hasOwn(result_parent, next)
-                    ? result_parent[next]
-                    : undefined
+                key,
+                Object.hasOwn(result_parent, key)
+                ? result_parent[key]
+                : undefined
             ];
         }
     })();
 
     if (child === undefined)
-        return parent; // don't create anything if the child doesn't already exist
+        return parent;
 
-    const result_child = traverse_json_delete(child, remainder);
-    if (result_child === undefined) {
-        if (typeof key === 'symbol') {
-            delete (<any>result_parent)[key];
-        }
-        else
+    if (remainder.length === 0) {
         if (Array.isArray(result_parent)) {
             if (key === 'length')
-                throw new Error('cannot delete array length');
-            if (!is_index_number(key))
-                throw new Error('invalid path');
+                throw new RangeError('Invalid array length');
 
-            result_parent.splice(key)
+            result_parent.splice(<number>key, 1)
         }
         else {
             delete result_parent[key];
         }
     }
     else
-    if (Array.isArray(result_parent)) {
-        if (key === 'length') {
-            const length = parse_index(result_child);
-            if (length === undefined)
-                throw new RangeError('Invalid array length');
-            if (length > result_parent.length)
-                throw new Error('cannot increase array length');
-            result_parent.length = length;
-        }
-        else
-        if (is_index_number(key)) {
-            if (key > result_parent.length)
-                throw new Error('cannot create sparse array');
+        traverse_json_delete(child, remainder);
 
-            result_parent[key] = result_child;
-        }
-        else
-            throw new Error('invalid path');
-    }
-    else
-    {
-        Object.defineProperty(
-            result_parent,
-            key,
-            {
-                value: result_child,
-                writable: true,
-                enumerable: true,
-                configurable: true
-            }
-        );
-    }
     return result_parent;
 }
 
