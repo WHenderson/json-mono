@@ -1,6 +1,12 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
-import {Segment} from "./types";
+import {AbsolutePointer, RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
 import {parse_index_string} from "@crikey/json";
+
+
+export function split_encoded(pointer: AbsolutePointer): { segments: Segment[] };
+export function split_encoded(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
+export function split_encoded(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
+export function split_encoded(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } | { relative: number, is_iref: true }
 
 export function split_encoded(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {
     const match = pointer.match(/^(?:(0|[1-9][0-9]*)($|#$|\/(?:[^~]|~0|~1)*$)|($|\/(?:[^~]|~0|~1)*$))/);

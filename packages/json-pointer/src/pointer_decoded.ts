@@ -1,11 +1,11 @@
-import {Pointer, Segment} from "./types";
+import {AbsolutePointer, PurePointer, Segment} from "./types";
 import {absolute_decoded} from "./absolute_decoded";
 import {relative_decoded} from "./relative_decoded";
 
-export function pointer_decoded(...segments: Segment[]) : Pointer;
-export function pointer_decoded(relative: number | undefined, ...segments: Segment[]) : Pointer
+export function pointer_decoded(...segments: Segment[]) : AbsolutePointer;
+export function pointer_decoded(relative: number | undefined, ...segments: Segment[]) : PurePointer;
 
-export function pointer_decoded(relative_or_segment: number | Segment | undefined, ...segments: Segment[]) : Pointer {
+export function pointer_decoded(relative_or_segment: number | Segment | undefined, ...segments: Segment[]) : PurePointer {
     if (relative_or_segment === undefined)
         return absolute_decoded(...segments);
     else

@@ -1,8 +1,11 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
-import {Pointer} from "./types";
+import {RelativeIRefPointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
-export function split_encoded_relative_iref(pointer: Pointer): number {
+export function split_encoded_relative_iref(pointer: RelativeIRefPointer): number;
+export function split_encoded_relative_iref(pointer: string): number;
+
+export function split_encoded_relative_iref(pointer: string): number {
     const match = pointer.match(/^(0|[1-9][0-9]*)#$/);
     if (!match)
         throw new PointerDecodingError('invalid iref relative pointer');

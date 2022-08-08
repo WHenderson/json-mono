@@ -1,8 +1,11 @@
-import {Pointer, Segment} from "./types";
+import {RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
 import {segment_decode} from "./segment_decode";
 import {split_encoded_relative_pure} from "./split_encoded_relative_pure";
 
-export function split_decoded_relative_pure(pointer: Pointer): { relative: number, segments: Segment[] } {
+export function split_decoded_relative_pure(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
+export function split_decoded_relative_pure(pointer: string): { relative: number, segments: Segment[] };
+
+export function split_decoded_relative_pure(pointer: string): { relative: number, segments: Segment[] } {
     const split = split_encoded_relative_pure(pointer);
 
     return {

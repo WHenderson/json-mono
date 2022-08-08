@@ -1,8 +1,12 @@
-import {Pointer, Segment} from "./types";
+import {RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
 import {segment_decode} from "./segment_decode";
 import {split_encoded_relative} from "./split_encoded_relative";
 
-export function split_decoded_relative(pointer: Pointer): { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {
+export function split_decoded_relative(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
+export function split_decoded_relative(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
+export function split_decoded_relative(pointer: string): { relative: number, segments: Segment[] } | { relative: number, is_iref: true };
+
+export function split_decoded_relative(pointer: string): { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {
     const split = split_encoded_relative(pointer);
 
     if (!('segments' in split))
