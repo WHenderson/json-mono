@@ -1,18 +1,18 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
-import {AbsolutePointer, RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
+import {AbsolutePointer, EncodedSegment, RelativeOnlyPointer, RelativePurePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
 
-export function split_encoded_pure(pointer: AbsolutePointer): { segments: Segment[] };
-export function split_encoded_pure(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
-export function split_encoded_pure(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] };
+export function split_encoded_pure(pointer: AbsolutePointer): { segments: EncodedSegment[] };
+export function split_encoded_pure(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: EncodedSegment[] };
+export function split_encoded_pure(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] };
 
-export function split_encoded_pure(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } {
+export function split_encoded_pure(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] } {
     const match = pointer.match(/^(0|[1-9][0-9]*)?($|\/(?:[^~]|~0|~1)*$)/);
     if (!match)
         throw new PointerDecodingError('invalid pure pointer');
 
-    const segments = match[2].split('/').slice(1);
+    const segments = <EncodedSegment[]>match[2].split('/').slice(1);
 
     if (match[1] === undefined)
         return { segments };

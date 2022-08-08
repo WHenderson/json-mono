@@ -1,11 +1,11 @@
-import {AbsolutePointer, PurePointer, Segment} from "./types";
+import {AbsolutePointer, EncodedSegment, PurePointer} from "./types";
 import {absolute_encoded} from "./absolute_encoded";
 import {relative_encoded} from "./relative_encoded";
 
-export function pointer_encoded(...segments: Segment[]) : AbsolutePointer;
-export function pointer_encoded(relative: number | undefined, ...segments: Segment[]) : PurePointer;
+export function pointer_encoded(...segments: EncodedSegment[]) : AbsolutePointer;
+export function pointer_encoded(relative: number | undefined, ...segments: EncodedSegment[]) : PurePointer;
 
-export function pointer_encoded(relative_or_segment: number | Segment | undefined, ...segments: Segment[]) : PurePointer {
+export function pointer_encoded(relative_or_segment: number | EncodedSegment | undefined, ...segments: EncodedSegment[]) : PurePointer {
     if (relative_or_segment === undefined)
         return absolute_encoded(...segments);
     else

@@ -1,11 +1,11 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
-import {RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
+import {EncodedSegment, RelativeOnlyPointer, RelativePurePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
-export function split_encoded_relative_pure(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
-export function split_encoded_relative_pure(pointer: string): { relative: number, segments: Segment[] };
+export function split_encoded_relative_pure(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: EncodedSegment[] };
+export function split_encoded_relative_pure(pointer: string): { relative: number, segments: EncodedSegment[] };
 
-export function split_encoded_relative_pure(pointer: string): { relative: number, segments: Segment[] } {
+export function split_encoded_relative_pure(pointer: string): { relative: number, segments: EncodedSegment[] } {
     const match = pointer.match(/^(0|[1-9][0-9]*)($|\/(?:[^~]|~0|~1)*$)/);
     if (!match)
         throw new PointerDecodingError('invalid pure relative pointer');
@@ -14,5 +14,5 @@ export function split_encoded_relative_pure(pointer: string): { relative: number
     if (relative === undefined)
         throw new PointerDecodingError('invalid pure relative pointer');
 
-    return { relative, segments: pointer.split('/').slice(1) };
+    return { relative, segments: <EncodedSegment[]>pointer.split('/').slice(1) };
 }

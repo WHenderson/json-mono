@@ -1,14 +1,14 @@
 import {PointerDecodingError} from "./pointer-decoding-error";
-import {AbsolutePointer, RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer, Segment} from "./types";
+import {AbsolutePointer, EncodedSegment, RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
 
-export function split_encoded(pointer: AbsolutePointer): { segments: Segment[] };
+export function split_encoded(pointer: AbsolutePointer): { segments: EncodedSegment[] };
 export function split_encoded(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
-export function split_encoded(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
-export function split_encoded(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } | { relative: number, is_iref: true }
+export function split_encoded(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: EncodedSegment[] };
+export function split_encoded(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] } | { relative: number, is_iref: true }
 
-export function split_encoded(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {
+export function split_encoded(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] } | { relative: number, is_iref: true } {
     const match = pointer.match(/^(?:(0|[1-9][0-9]*)($|#$|\/(?:[^~]|~0|~1)*$)|($|\/(?:[^~]|~0|~1)*$))/);
     if (!match)
         throw new PointerDecodingError('invalid pointer');
@@ -16,7 +16,7 @@ export function split_encoded(pointer: string): { segments: Segment[] } | { rela
     if (match[3] === '')
         return { segments: [] }
     if (match[3] !== undefined)
-        return { segments: match[3].split('/').slice(1) }
+        return { segments: <EncodedSegment[]>match[3].split('/').slice(1) }
 
     const relative = parse_index_string(match[1]);
     if (relative === undefined)
@@ -28,5 +28,5 @@ export function split_encoded(pointer: string): { segments: Segment[] } | { rela
     if (remainder === '#')
         return { relative, is_iref: true };
 
-    return { relative, segments: pointer.split('/').slice(1) }
+    return { relative, segments: <EncodedSegment[]>pointer.split('/').slice(1) }
 }

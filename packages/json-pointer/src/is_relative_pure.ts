@@ -1,15 +1,15 @@
-import {RelativePurePointer} from "./types";
+import {RelativeOnlyPointer, RelativePurePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
 /**
- * Returns true if pointer is a string representing a Relative JSON Pointer
+ * Returns true if value is a string representing a Relative JSON Pointer
  * @see [Relative JSON Pointers](https://tools.ietf.org/id/draft-handrews-relative-json-pointer-00.html#rfc.section.3)
- * @param pointer
+ * @param value
  */
-export function is_relative_pure(pointer: any) : pointer is RelativePurePointer {
-    if (typeof pointer !== 'string')
+export function is_relative_pure(value: any) : value is RelativeOnlyPointer | RelativePurePointer {
+    if (typeof value !== 'string')
         return false;
 
-    const match = pointer.match(/^(0|[1-9][0-9]*)(?:$|\/(?:[^~]|~0|~1)*$)/);
+    const match = value.match(/^(0|[1-9][0-9]*)(?:$|\/(?:[^~]|~0|~1)*$)/);
     return !!match && parse_index_string(match[1]) !== undefined;
 }
