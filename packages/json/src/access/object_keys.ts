@@ -1,5 +1,5 @@
 /**
- * Returns all keys within value.
+ * Returns all keys ownProperty keys within value.
  *
  * @param value
  */

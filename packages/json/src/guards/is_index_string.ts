@@ -1,5 +1,5 @@
 /**
- * Returns true if value is a valid index (safe integer >= 0)
+ * Returns true if value is the string representation of a valid index (safe integer >= 0)
  * @param value
  */
 import {parse_index_string} from "../util";

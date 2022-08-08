@@ -1,7 +1,7 @@
 import {JsonPrimitive} from "../types";
 
 /**
- * Returns true if value is a primitive json type
+ * Returns true if value is a primitive json type (null, boolean, integer, number, string)
  *
  * @param value
  */

@@ -4,13 +4,12 @@ import {is_array} from "./is_array";
 import {is_object} from "./is_object";
 
 /**
- * Returns true if value, and any deeply contained values, are json types.
+ * Returns true if value, and any deeply contained values, are jsonish types.
  * Note that this does not guarantee that all values are encodable.
- * Note that object members cannot be undefined
  *
  * @param value
  */
-export function is_jsonish_deep<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
+export function is_jsonish_deep<T>(value: any | undefined | JsonPrimitive | T[] | Record<string, T>): value is undefined | JsonPrimitive | T[] | Record<string, T> {
     return _is_jsonish_deep(value, []);
 }
 

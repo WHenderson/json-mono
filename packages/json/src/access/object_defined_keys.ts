@@ -1,7 +1,7 @@
 import {object_defined_entries} from "./object_defined_entries";
 
 /**
- * Return all keys which map to a defined value
+ * Returns all keys ownProperty keys within value which have a defined value
  *
  * @param obj
  */

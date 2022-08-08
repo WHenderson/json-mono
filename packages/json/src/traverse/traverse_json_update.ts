@@ -5,6 +5,17 @@ import {parse_index} from "../util";
 import {_next} from "./_next";
 import {creator_err_object} from "./creator_err_object";
 
+/**
+ * Traverses root with the given path, creating missing members and elements as required, and applies update to the final value.
+ * Note: if update returns undefined, the leaf node is deleted and any generated parents are discarded
+ * @returns the original (but modified) root, or the result of updating the original root if path is empty
+ * @param root
+ * @param path
+ * @param update accepts the current value and returns the resulting value
+ * @param creator optional method for creating missing parents as a path is constructed. default is {@link creator_err_object}
+ */
+export function traverse_json_update(root: MaybeJson, path: Path, update: (value: MaybeJson) => MaybeJson, creator?: (next: PathSegment) => Json): MaybeJson;
+
 export function traverse_json_update(parent: MaybeJson, path: Path, update: (value: MaybeJson) => MaybeJson, creator?: (next: PathSegment) => Json): MaybeJson {
     if (path.length === 0)
         return update(parent);

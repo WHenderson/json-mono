@@ -17,12 +17,11 @@ export function compare_entries_by_key([lhs,]: [string, unknown], [rhs,]: [strin
 
 /**
  * Returns true if lhs and rhs are equivalent json structures.
- * Note that undefined values are ignored.
- * Note that entry key order within objects is ignored.
+ * Note that NaN values are considered equal
  *
  * @param lhs
  * @param rhs
- * @param options
+ * @param options options used to control how comparisons are performed
  * @param options.sort if true, will sort object keys before evaluation
  * @param options.filter if true, will filter undefined keys before evaluation
  */

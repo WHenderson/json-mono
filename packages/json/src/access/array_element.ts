@@ -1,7 +1,8 @@
 import {array_has_index} from "./array_has_index";
 
 /**
- * Returns the index item of value
+ * Returns the requested array element
+ *
  * @param value
  * @param index
  */

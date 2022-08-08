@@ -5,6 +5,10 @@
 import {is_index_number} from "../guards";
 import {IndexNumber} from "../types";
 
+/**
+ * Returns the numerical representation of encoded_index, or undefined.
+ * @param encoded_index
+ */
 export function parse_index(encoded_index: any) : IndexNumber | undefined {
     if (typeof encoded_index === 'number') {
         if (is_index_number(encoded_index))

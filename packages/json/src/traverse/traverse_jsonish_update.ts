@@ -5,6 +5,16 @@ import {parse_index} from "../util";
 import {_next} from "./_next";
 import {creator_err_object} from "./creator_err_object";
 
+/**
+ * Traverses root with the given path, creating missing members and elements as required, and applies update to the final value.
+ * @returns the original (but modified) root, or the result of updating the original root if path is empty
+ * @param root
+ * @param path
+ * @param update accepts the current value and returns the resulting value
+ * @param creator optional method for creating missing parents as a path is constructed. default is {@link creator_err_object}
+ */
+export function traverse_jsonish_update(root: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish, creator?: (next: PathSegment) => Jsonish): MaybeJsonish;
+
 export function traverse_jsonish_update(parent: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish, creator?: (next: PathSegment) => Jsonish): MaybeJsonish {
     if (path.length === 0)
         return update(parent);

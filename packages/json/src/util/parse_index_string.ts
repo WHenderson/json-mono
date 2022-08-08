@@ -1,5 +1,5 @@
 /**
- * Parses the given encoded_index into an index, or undefined if it is invalid
+ * Returns the given encoded_index parsed into a numerical index, or undefined if the string does not represent a valid index
  * @param index
  */
 import {is_index_number} from "../guards";

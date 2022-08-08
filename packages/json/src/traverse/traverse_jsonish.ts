@@ -4,6 +4,9 @@ import {traverse_jsonish_update} from "./traverse_jsonish_update";
 import {traverse_delete} from "./traverse_delete";
 import {traverse_has} from "./traverse_has";
 
+/**
+ * Fixed collection of traversal methods tailored for the {@link Jsonish} type
+ */
 export const traverse_jsonish = {
     has: traverse_has,
     get: traverse_get,

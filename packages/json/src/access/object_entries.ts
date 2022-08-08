@@ -1,5 +1,5 @@
 /**
- * Returns [key,value] pairs for each entry of in value
+ * Returns [key,value] pairs for each ownProperty entry in value
  *
  * @param value
  */

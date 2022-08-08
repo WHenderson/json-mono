@@ -1,31 +1,32 @@
-import {Json, Jsonish, MaybeJson, MaybeJsonish} from "../types";
-import {is_primitive} from "../guards/is_primitive";
-import {is_array} from "../guards/is_array";
+import {Json, JsonContainerish, Jsonish, JsonPrimitive} from "../types";
+import {is_array, is_primitive} from "../guards";
 
 /**
- * Returns a deep clone of the given value
- * Note: Does not support (or check for) recursive objects
+ * Returns a deep clone of the given value Json or Jsonish value
  * @param value
  */
-export function clone(value: Jsonish): Json;
+export function clone<T>(value: undefined | JsonPrimitive | T[] | Record<string, T>): undefined | JsonPrimitive | T[] | Record<string, T>;
 
-/**
- * Returns a deep clone of the given value
- * Note: Does not support (or check for) recursive objects
- * @param value
- */
-export function clone(value: MaybeJsonish): MaybeJson;
 
-export function clone(value: MaybeJsonish): MaybeJson {
+export function clone(value: Jsonish): Jsonish {
+    return _clone(value, []);
+}
+
+export function _clone(value: Jsonish, stack: JsonContainerish[]): Jsonish {
     if (value === undefined || is_primitive(value))
         return value;
 
+    if (stack.some(parent => parent === value))
+        throw new Error('recursive structure detected');
+
+    const stack_ = [...stack, value];
+
     if (is_array(value))
-        return value.map(element => clone(element));
+        return value.map(element => _clone(element, stack_));
 
     return Object.fromEntries(
         Object
             .entries(value)
-            .map(([key, member]) => <[string, Json]>[key, clone(member)])
+            .map(([key, member]) => <[string, Json]>[key, _clone(member, stack_)])
     );
 }

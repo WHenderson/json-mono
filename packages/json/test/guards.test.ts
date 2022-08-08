@@ -59,7 +59,7 @@ it('should correctly identify all values', () => {
     ];
 
     const values = [
-        { value: undefined, truthy: [is_undefined] },
+        { value: undefined, truthy: [is_undefined, is_encodable_jsonish_deep] },
         { value: null, truthy: [is_null, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: true, truthy: [is_boolean, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: false, truthy: [is_boolean, is_primitive, is_encodable_primitive, ...guards_json]},
@@ -78,10 +78,10 @@ it('should correctly identify all values', () => {
         { value: '123', truthy: [is_string, is_primitive, is_index_string, is_index_number_or_string, is_encodable_primitive, ...guards_json]},
         { value: '0123', truthy: [is_string, is_primitive, is_encodable_primitive, ...guards_json]},
         { value: {}, truthy: [is_object, is_container, ...guards_json]},
-        { value: { a: undefined }, truthy: [is_object, is_container, is_json, is_json_deep, is_encodable_json, is_encodable_json_deep, ]},
+        { value: { a: undefined }, truthy: [is_object, is_container, is_json, is_json_deep, is_encodable_json, is_encodable_json_deep, is_encodable_jsonish_deep, ]},
         { value: { a: NaN }, truthy: [is_object, is_container, is_json, is_json_deep, is_jsonish_deep, is_encodable_json ]},
         { value: [], truthy: [is_array, is_container, ...guards_json]},
-        { value: [undefined], truthy: [is_array, is_container, is_json, is_encodable_json, ]},
+        { value: [undefined], truthy: [is_array, is_container, is_json, is_encodable_json, is_encodable_jsonish_deep]},
         { value: [NaN], truthy: [is_array, is_container, is_json, is_json_deep, is_jsonish_deep, is_encodable_json ]},
     ];
 

@@ -1,7 +1,7 @@
 import {object_has_key} from "./object_has_key";
 
 /**
- * Returns the given object member, or undefined
+ * Returns the requested object member, or undefined
  *
  * @param json
  * @param key

@@ -3,7 +3,19 @@ import {Path} from "./types";
 import {is_array, is_container} from "../guards";
 import {parse_index} from "../util";
 
+/**
+ * Returns the value resulting from traversing root with the given path
+ * @param root
+ * @param path
+ */
 export function traverse_get(root: MaybeJson, path: Path): MaybeJson;
+
+/**
+ * Returns the value resulting from traversing root with the given path
+ *
+ * @param root
+ * @param path
+ */
 export function traverse_get(root: MaybeJsonish, path: Path): MaybeJsonish;
 
 export function traverse_get(root: MaybeJsonish, path: Path): MaybeJsonish {

@@ -2,7 +2,7 @@ import {JsonPrimitive} from "../types";
 import {is_finite_number} from "./is_finite_number";
 
 /**
- * Returns true if value is a primitive json type and is valid
+ * Returns true if value is a primitive json type with a json supported value
  *
  * @param value
  */

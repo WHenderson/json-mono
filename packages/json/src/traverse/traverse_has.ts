@@ -3,7 +3,18 @@ import {Path} from "./types";
 import {is_array, is_container} from "../guards";
 import {parse_index} from "../util";
 
+/**
+ * Traverses root with the given path, returning true if the entire path exists
+ * @param root
+ * @param path
+ */
 export function traverse_has(root: MaybeJson, path: Path): boolean;
+
+/**
+ * Traverses root with the given path, returning true if the entire path exists
+ * @param root
+ * @param path
+ */
 export function traverse_has(root: MaybeJsonish, path: Path): boolean;
 
 export function traverse_has(root: MaybeJsonish, path: Path): boolean {

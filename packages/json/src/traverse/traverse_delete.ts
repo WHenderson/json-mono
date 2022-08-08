@@ -3,7 +3,20 @@ import {Path} from "./types";
 import {is_container} from "../guards";
 import {_next} from "./_next";
 
+/**
+ * Traverses root with the given path, deleting the last item if it exists
+ * @returns the original input, or undefined if path was empty
+ * @param root
+ * @param path
+ */
 export function traverse_delete(root: MaybeJson, path: Path): MaybeJson;
+
+/**
+ * Traverses root with the given path, deleting the last item if it exists
+ * @returns the original input, or undefined if path was empty
+ * @param root
+ * @param path
+ */
 export function traverse_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
 
 export function traverse_delete(parent: MaybeJsonish, path: Path): MaybeJsonish {
