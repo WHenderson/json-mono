@@ -66,31 +66,12 @@ Provides methods for the following activities:
 
 ### Utilities
 
-* `clone`
+* `clone` Returns a deep clone of the given value Json or Jsonish value
 
-* `parse_index`
-* `parse_index_string`
-
-* `object_assign`
-
-* `constant` - Create a `Readable` store with a fixed value
-* `readable` - Create a `Readable` store
-* `writable` - Create a `Writable` store
-* `derive`   - Create a `Readable` store derived from the resolved values of other stores
-* `transform`- Create a `Writable` store by applying transform functions when reading and writing values
-
-### Utility functions:
-* `get` - Retrieve the value of a store
-* `read_only` - Restrict a store to the `Readable` interface
-
-### Type guards:
-* `is_writable` Type guard to determine if store is `Writable`
-* `is_readable` Type guard to determine if store is `Readable`
-
-### Trigger functions:
-* `trigger_always` - Trigger at every available opportunity
-* `trigger_strict_not_equal` - Trigger based on strict inequality
-* `trigger_safe_not_equal` - Svelte compatible trigger - Trigger when not equal or value is complex
+* `parse_index` Parses the given encoded_index into an index, or undefined if it is invalid
+* `parse_index_string` Returns the given encoded_index parsed into a numerical index, or undefined if the string does not represent a valid index
+ 
+* `object_assign` Safe version of Object.assign which doesn't risk polluting the result object via `__proto__`
 
 ## Installation
 

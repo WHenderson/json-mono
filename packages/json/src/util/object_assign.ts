@@ -1,7 +1,7 @@
 import {JsonObject} from "../types";
 
 /**
- * Safe version of Object.assign which doesn't risk polluting an object via __proto__
+ * Safe version of Object.assign which doesn't risk polluting the result object via `__proto__`
  *
  * @param target
  * @param sources

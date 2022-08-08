@@ -58,39 +58,20 @@ Contains typescript guards for identifying type information.
 ### Traversal
 
 Provides methods for the following activities:
-* {@link traverse_json.has}, {@link traverse_jsonish.has} returns true if the given path exists
-* {@link traverse_json.get}, {@link traverse_jsonish.get} returns the value resulting from traversing the given path
-* {@link traverse_json.set}, {@link traverse_jsonish.set} traverses the given path, creating objects and arrays as necessary, and sets the leaf node value
-* {@link traverse_json.update}, {@link traverse_jsonish.update} traverses the given path, creating objects and arrays as necessary, and updates the leaf node value
-* {@link traverse_json.delete}, {@link traverse_jsonish.delete} traverses the given path, deleting the leaf node if it exists
+* {@link traverse_has | traverse_json.has}, {@link traverse_has | traverse_jsonish.has} returns true if the given path exists
+* {@link traverse_get | traverse_json.get}, {@link traverse_get | traverse_jsonish.get} returns the value resulting from traversing the given path
+* {@link traverse_json_set | traverse_json.set}, {@link traverse_jsonish_set | traverse_jsonish.set} traverses the given path, creating objects and arrays as necessary, and sets the leaf node value
+* {@link traverse_json_update | traverse_json.update}, {@link traverse_jsonish_update | traverse_jsonish.update} traverses the given path, creating objects and arrays as necessary, and updates the leaf node value
+* {@link traverse_delete | traverse_json.delete}, {@link traverse_delete | traverse_jsonish.delete} traverses the given path, deleting the leaf node if it exists
 
 ### Utilities
 
-* {@link clone}
+* {@link clone} Returns a deep clone of the given value Json or Jsonish value
 
-* {@link parse_index}
-* {@link parse_index_string}
+* {@link parse_index} Parses the given encoded_index into an index, or undefined if it is invalid
+* {@link parse_index_string} Returns the given encoded_index parsed into a numerical index, or undefined if the string does not represent a valid index
 
-* {@link object_assign}
-
-* {@link constant} - Create a {@link Readable} store with a fixed value
-* {@link readable} - Create a {@link Readable} store
-* {@link writable} - Create a {@link Writable} store
-* {@link derive}   - Create a {@link Readable} store derived from the resolved values of other stores
-* {@link transform}- Create a {@link Writable} store by applying transform functions when reading and writing values
-
-### Utility functions:
-* {@link get} - Retrieve the value of a store
-* {@link read_only} - Restrict a store to the {@link Readable} interface
-
-### Type guards:
-* {@link is_writable} Type guard to determine if store is {@link Writable}
-* {@link is_readable} Type guard to determine if store is {@link Readable}
-
-### Trigger functions:
-* {@link trigger_always} - Trigger at every available opportunity
-* {@link trigger_strict_not_equal} - Trigger based on strict inequality
-* {@link trigger_safe_not_equal} - Svelte compatible trigger - Trigger when not equal or value is complex
+* {@link object_assign} Safe version of Object.assign which doesn't risk polluting the result object via `__proto__`
 
 ## Installation
 
