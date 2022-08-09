@@ -153,8 +153,8 @@ it('should fail on recursive structures', () => {
     const recursive : JsonObject = { a: [] };
     (<JsonArray>recursive.a)[0] = recursive;
 
-    expect(() => is_json_deep(recursive)).toThrow('recursive structure detected');
-    expect(() => is_jsonish_deep(recursive)).toThrow('recursive structure detected');
-    expect(() => is_encodable_json_deep(recursive)).toThrow('recursive structure detected');
-    expect(() => is_encodable_jsonish_deep(recursive)).toThrow('recursive structure detected');
+    expect(is_json_deep(recursive)).toBeFalsy();
+    expect(is_jsonish_deep(recursive)).toBeFalsy();
+    expect(is_encodable_json_deep(recursive)).toBeFalsy();
+    expect(is_encodable_jsonish_deep(recursive)).toBeFalsy();
 })

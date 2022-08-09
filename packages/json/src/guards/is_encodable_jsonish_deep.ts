@@ -26,7 +26,7 @@ function _is_encodable_jsonish_deep(value: any, stack: JsonContainer[]): value i
         return true;
 
     if (stack.some(parent => parent === value))
-        throw new Error('recursive structure detected');
+        return false; // Circular structures are not JSON compatible
 
     const stack_ = [...stack, value];
 
