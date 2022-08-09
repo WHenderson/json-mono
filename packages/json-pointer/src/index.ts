@@ -1,6 +1,7 @@
 export * from './types';
 
 export * from './is_pointer';
+export * from './is_pointer';
 export * from './is_absolute';
 export * from './is_relative';
 export * from './is_relative_pure';

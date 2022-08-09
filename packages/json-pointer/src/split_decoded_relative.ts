@@ -2,8 +2,22 @@ import {RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer, Segment} 
 import {segment_decode} from "./segment_decode";
 import {split_encoded_relative} from "./split_encoded_relative";
 
+/**
+ * Splits a pointer into its constituent parts, decoding any path segments
+ * @param pointer
+ */
 export function split_decoded_relative(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
+
+/**
+ * Splits a pointer into its constituent parts, decoding any path segments
+ * @param pointer
+ */
 export function split_decoded_relative(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
+
+/**
+ * Splits a pointer into its constituent parts, decoding any path segments
+ * @param pointer
+ */
 export function split_decoded_relative(pointer: string): { relative: number, segments: Segment[] } | { relative: number, is_iref: true };
 
 export function split_decoded_relative(pointer: string): { relative: number, segments: Segment[] } | { relative: number, is_iref: true } {

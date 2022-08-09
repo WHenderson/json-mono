@@ -2,8 +2,22 @@ import {PointerDecodingError} from "./pointer-decoding-error";
 import {EncodedSegment, RelativeIRefPointer, RelativeOnlyPointer, RelativePurePointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
 export function split_encoded_relative(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
+
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
 export function split_encoded_relative(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: EncodedSegment[] };
+
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
 export function split_encoded_relative(pointer: string): { relative: number, segments: EncodedSegment[] } | { relative: number, is_iref: true };
 
 export function split_encoded_relative(pointer: string): { relative: number, segments: EncodedSegment[] } | { relative: number, is_iref: true } {

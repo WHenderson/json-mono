@@ -1,3 +1,6 @@
+/**
+ * Used to represent a failure during the encoding of a pointer
+ */
 export class PointerEncodingError extends TypeError {
     constructor(message = PointerEncodingError.name) {
         super(message);

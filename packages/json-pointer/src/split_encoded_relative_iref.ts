@@ -2,7 +2,16 @@ import {PointerDecodingError} from "./pointer-decoding-error";
 import {RelativeIRefPointer} from "./types";
 import {parse_index_string} from "@crikey/json";
 
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
 export function split_encoded_relative_iref(pointer: RelativeIRefPointer): number;
+
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
 export function split_encoded_relative_iref(pointer: string): number;
 
 export function split_encoded_relative_iref(pointer: string): number {
