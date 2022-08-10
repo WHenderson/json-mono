@@ -1,8 +1,12 @@
-import {Pointer} from '@crikey/json-pointer';
+import {AbsolutePointer} from "./types";
 
-export function is_absolute(pointer: any): pointer is Pointer {
-    if (typeof pointer !== 'string')
+/**
+ * Returns true if value is a string representing a private pointer
+ * @param value
+ */
+export function is_absolute(value: any): value is AbsolutePointer {
+    if (typeof value !== 'string')
         return false;
 
-    return /^(?:$|\/(?:[^~:]|~0|~1|:0|:1)*$)/.test(pointer);
+    return /^(?:$|\/(?:[^~:]|~0|~1|:0|:1)*$)/.test(value);
 }

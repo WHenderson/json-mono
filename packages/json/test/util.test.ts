@@ -1,5 +1,5 @@
 import {expect, it} from "vitest";
-import {clone, is_equal_deep, object_assign, parse_index, parse_index_string} from "../src";
+import {clone, is_equal_deep, JsonObject, object_assign, parse_index, parse_index_string} from "../src";
 import {inspect} from "node:util";
 
 it('should clone objects', () => {
@@ -27,6 +27,10 @@ it('should clone objects', () => {
             expect(is_equal_deep(value, clone(value)), inspect(value)).toBeTruthy();
         }
     );
+
+    const circular: JsonObject = {};
+    circular['a'] = circular;
+    expect(() => clone(circular)).to.throw(TypeError, 'Cannot clone circular structure');
 });
 
 it('should parse index', () => {

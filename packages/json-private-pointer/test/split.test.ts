@@ -1,8 +1,8 @@
 import {expect, it} from "vitest";
 import {
-    split_decoded,
-    split_decoded_absolute,
-    split_decoded_relative,
+    split,
+    split_absolute,
+    split_relative,
     split_encoded,
     split_encoded_absolute,
     split_encoded_relative,
@@ -37,29 +37,29 @@ it('should split paths as expected', () => {
 
     // ---
 
-    expect(split_decoded('')).to.deep.equal({ segments: [] });
-    expect(split_decoded('/')).to.deep.equal({ segments: [[false, '']] });
-    expect(split_decoded('/abc/xyz')).to.deep.equal({ segments: [[false, 'abc'], [false, 'xyz']] });
-    expect(split_decoded('/~0~1')).to.deep.equal({ segments: [[false, '~/']] });
-    expect(() => split_decoded('/~3')).to.throw('invalid pointer');
-    expect(split_decoded('0')).to.deep.equal({ relative: 0, segments: [] });
-    expect(() => split_decoded('001')).to.throw('invalid pointer');
-    expect(() => split_decoded('99999999999999999999999999999999999999999999999999999')).to.throw('invalid relative pointer');
-    expect(split_decoded('0/abc/xyz')).to.deep.equal({ relative: 0, segments: [[false, 'abc'], [false, 'xyz']] });
-    expect(split_decoded('0/~0~1')).to.deep.equal({ relative: 0, segments: [[false, '~/']] });
+    expect(split('')).to.deep.equal({ segments: [] });
+    expect(split('/')).to.deep.equal({ segments: [[false, '']] });
+    expect(split('/abc/xyz')).to.deep.equal({ segments: [[false, 'abc'], [false, 'xyz']] });
+    expect(split('/~0~1')).to.deep.equal({ segments: [[false, '~/']] });
+    expect(() => split('/~3')).to.throw('invalid pointer');
+    expect(split('0')).to.deep.equal({ relative: 0, segments: [] });
+    expect(() => split('001')).to.throw('invalid pointer');
+    expect(() => split('99999999999999999999999999999999999999999999999999999')).to.throw('invalid relative pointer');
+    expect(split('0/abc/xyz')).to.deep.equal({ relative: 0, segments: [[false, 'abc'], [false, 'xyz']] });
+    expect(split('0/~0~1')).to.deep.equal({ relative: 0, segments: [[false, '~/']] });
 
-    expect(split_decoded_absolute('')).to.deep.equal([]);
-    expect(split_decoded_absolute('/')).to.deep.equal([[false, '']]);
-    expect(split_decoded_absolute('/abc/xyz')).to.deep.equal([[false, 'abc'], [false, 'xyz']]);
-    expect(split_decoded_absolute('/~0~1')).to.deep.equal([[false, '~/']]);
-    expect(() => split_decoded_absolute('/~3')).to.throw('invalid absolute pointer');
-    expect(() => split_decoded_absolute('0')).to.throw('invalid absolute pointer');
+    expect(split_absolute('')).to.deep.equal([]);
+    expect(split_absolute('/')).to.deep.equal([[false, '']]);
+    expect(split_absolute('/abc/xyz')).to.deep.equal([[false, 'abc'], [false, 'xyz']]);
+    expect(split_absolute('/~0~1')).to.deep.equal([[false, '~/']]);
+    expect(() => split_absolute('/~3')).to.throw('invalid absolute pointer');
+    expect(() => split_absolute('0')).to.throw('invalid absolute pointer');
 
-    expect(() => split_decoded_relative('')).to.throw('invalid relative pointer');
-    expect(() => split_decoded_relative('/')).to.throw('invalid relative pointer');
-    expect(split_decoded_relative('0')).to.deep.equal({ relative: 0, segments: [] });
-    expect(() => split_decoded_relative('001')).to.throw('invalid relative pointer');
-    expect(() => split_decoded_relative('99999999999999999999999999999999999999999999999999999')).to.throw('invalid relative pointer');
-    expect(split_decoded_relative('0/abc/xyz')).to.deep.equal({ relative: 0, segments: [[false, 'abc'], [false, 'xyz']] });
-    expect(split_decoded_relative('0/~0~1')).to.deep.equal({ relative: 0, segments: [[false, '~/']] });
+    expect(() => split_relative('')).to.throw('invalid relative pointer');
+    expect(() => split_relative('/')).to.throw('invalid relative pointer');
+    expect(split_relative('0')).to.deep.equal({ relative: 0, segments: [] });
+    expect(() => split_relative('001')).to.throw('invalid relative pointer');
+    expect(() => split_relative('99999999999999999999999999999999999999999999999999999')).to.throw('invalid relative pointer');
+    expect(split_relative('0/abc/xyz')).to.deep.equal({ relative: 0, segments: [[false, 'abc'], [false, 'xyz']] });
+    expect(split_relative('0/~0~1')).to.deep.equal({ relative: 0, segments: [[false, '~/']] });
 })

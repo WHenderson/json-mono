@@ -1,19 +1,26 @@
 import {expect, it} from "vitest";
-import {join_segments, join_encoded_segments, join_iref, join_pointer, PointerEncodingError} from "../src";
+import {
+    join_segments,
+    join_encoded_segments,
+    join_iref,
+    join_pointer,
+    PointerEncodingError,
+    EncodedSegment
+} from "../src";
 
 it('should join decoded segments', () => {
     expect(join_segments('', 'abc', '~', '/')).toBe('/abc/~0/~1');
 });
 
 it('should join encoded segments', () => {
-    expect(join_encoded_segments('', 'abc', '~0', '~1')).toBe('/abc/~0/~1');
+    expect(join_encoded_segments('', <EncodedSegment>'abc', <EncodedSegment>'~0', <EncodedSegment>'~1')).toBe('/abc/~0/~1');
 
     // Note that encoding is not checked
-    expect(join_encoded_segments('', 'abc', '~0', '~1', '~3')).toBe('/abc/~0/~1/~3');
+    expect(join_encoded_segments('', <EncodedSegment>'abc', <EncodedSegment>'~0', <EncodedSegment>'~1', <EncodedSegment>'~3')).toBe('/abc/~0/~1/~3');
 
     expect(join_encoded_segments('/abc')).toBe('/abc');
 
-    expect(() => join_encoded_segments('10#', 'abc')).to.throw(PointerEncodingError, 'Cannot join segments to an index reference');
+    expect(() => join_encoded_segments('10#', <EncodedSegment>'abc')).to.throw(PointerEncodingError, 'Invalid pointer');
 
     expect(join_iref('123')).toBe('123#');
     expect(() => join_iref('/abc')).to.throw(PointerEncodingError, 'Expected only relative');

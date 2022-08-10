@@ -7,7 +7,6 @@ import {is_array, is_primitive} from "../guards";
  */
 export function clone<T>(value: undefined | JsonPrimitive | T[] | Record<string, T>): undefined | JsonPrimitive | T[] | Record<string, T>;
 
-
 export function clone(value: Jsonish): Jsonish {
     return _clone(value, []);
 }
@@ -17,7 +16,7 @@ export function _clone(value: Jsonish, stack: JsonContainerish[]): Jsonish {
         return value;
 
     if (stack.some(parent => parent === value))
-        throw new Error('recursive structure detected');
+        throw new TypeError('Cannot clone circular structure');
 
     const stack_ = [...stack, value];
 

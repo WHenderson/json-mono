@@ -1,7 +1,7 @@
 import {RelativeOnlyPointer, RelativePurePointer, root_pointer, Segment} from "./types";
 import {is_index_number} from "@crikey/json";
-import {PointerEncodingError} from "./pointer-encoding-error";
 import {join_segments} from "./join_segments";
+import {PointerEncodingError} from "./pointer-encoding-error";
 
 /**
  * Generates a relative pointer

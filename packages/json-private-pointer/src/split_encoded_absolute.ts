@@ -1,8 +1,12 @@
 import {PointerDecodingError} from "@crikey/json-pointer";
-import {Pointer, Segment} from "./types";
+import {Segment} from "./types";
 import {is_absolute} from "./is_absolute";
 
-export function split_encoded_absolute(pointer: Pointer): Segment[] {
+/**
+ * Splits a pointer into its constituent parts, leaving path segments encoded
+ * @param pointer
+ */
+export function split_encoded_absolute(pointer: string): Segment[] {
     if (!is_absolute(pointer))
         throw new PointerDecodingError('invalid absolute pointer');
 

@@ -31,7 +31,7 @@ export function join_encoded_segments(pure_pointer: string, ...encoded_segments:
 
 export function join_encoded_segments(pure_pointer: string, ...encoded_segments: EncodedSegment[]): PurePointer {
     if (!is_pointer_pure(pure_pointer))
-        throw new PointerEncodingError('Cannot join segments to an index reference');
+        throw new PointerEncodingError('Invalid pointer');
 
     if (encoded_segments.length === 0)
         return pure_pointer;

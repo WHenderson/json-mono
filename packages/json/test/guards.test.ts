@@ -83,6 +83,7 @@ it('should correctly identify all values', () => {
         { value: [], truthy: [is_array, is_container, ...guards_json]},
         { value: [undefined], truthy: [is_array, is_container, is_json, is_encodable_json, is_encodable_jsonish_deep]},
         { value: [NaN], truthy: [is_array, is_container, is_json, is_json_deep, is_jsonish_deep, is_encodable_json ]},
+        { value: <Json><unknown>Symbol('symbol'), truthy:<Array<typeof is_array>>[] }
     ];
 
     values.forEach(({ value, truthy }, index) => {

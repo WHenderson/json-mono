@@ -1,5 +1,9 @@
 import {DecodedSegment, Segment} from "./types";
 
+/**
+ * Decodes an encoded segment
+ * @param segment
+ */
 export function segment_decode(segment: Segment): DecodedSegment {
     const [is_private, remainder] = segment.startsWith('~3')
         ? [true, segment.slice(2)]

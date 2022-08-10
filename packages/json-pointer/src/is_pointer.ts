@@ -1,7 +1,11 @@
 import {Pointer} from "./types";
-import {parse_index_string} from '@crikey/json';
+import {parse_index_string} from "@crikey/json";
 
-export function is_pointer(value: any) : value is Pointer {
+/**
+ * Returns true if value is a pointer
+ * @param value
+ */
+export function is_pointer(value: any): value is Pointer {
     if (typeof value !== 'string')
         return false;
 

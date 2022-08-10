@@ -1,8 +1,12 @@
-import {DecodedSegment, Pointer} from "./types";
+import {DecodedSegment} from "./types";
 import {segment_decode} from "./segment_decode";
 import {split_encoded_relative} from "./split_encoded_relative";
 
-export function split_decoded_relative(pointer: Pointer): { relative: number, segments: DecodedSegment[] } {
+/**
+ * Split a relative pointer into its components
+ * @param pointer
+ */
+export function split_relative(pointer: string): { relative: number, segments: DecodedSegment[] } {
     const split = split_encoded_relative(pointer);
 
     return {

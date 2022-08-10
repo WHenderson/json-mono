@@ -1,9 +1,9 @@
 import {expect, it} from "vitest";
-import {join_decoded_segments, join_encoded_segments, join_pointer} from "../src";
+import {join_segments, join_encoded_segments, join_pointer} from "../src";
 
 it('should join decoded segments', () => {
-    expect(join_decoded_segments('', 'abc', '~', '/', '~3')).toBe('/abc/~0/~1/~03');
-    expect(join_decoded_segments('', [true, 'abc'], [true, '~'], [true, '/'], [true, ':1'], [false, ':1'])).toBe('/~3abc/~3~0/~3~1/~3:1/:1');
+    expect(join_segments('', 'abc', '~', '/', '~3')).toBe('/abc/~0/~1/~03');
+    expect(join_segments('', [true, 'abc'], [true, '~'], [true, '/'], [true, ':1'], [false, ':1'])).toBe('/~3abc/~3~0/~3~1/~3:1/:1');
 });
 
 it('should join encoded segments', () => {

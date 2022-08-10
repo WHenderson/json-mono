@@ -5,7 +5,7 @@ import {AbsolutePointer} from "./types";
  * @see [RFC6901 - JavaScript Object Notation (JSON) Pointer](https://datatracker.ietf.org/doc/html/rfc6901)
  * @param value
  */
-export function is_absolute(value: any) : value is AbsolutePointer {
+export function is_absolute(value: any): value is AbsolutePointer {
     if (typeof value !== 'string')
         return false;
 
