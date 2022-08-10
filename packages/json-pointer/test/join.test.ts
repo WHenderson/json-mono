@@ -1,8 +1,8 @@
 import {expect, it} from "vitest";
-import {join_decoded_segments, join_encoded_segments, join_iref, join_pointer, PointerEncodingError} from "../src";
+import {join_segments, join_encoded_segments, join_iref, join_pointer, PointerEncodingError} from "../src";
 
 it('should join decoded segments', () => {
-    expect(join_decoded_segments('', 'abc', '~', '/')).toBe('/abc/~0/~1');
+    expect(join_segments('', 'abc', '~', '/')).toBe('/abc/~0/~1');
 });
 
 it('should join encoded segments', () => {

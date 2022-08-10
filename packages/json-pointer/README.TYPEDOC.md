@@ -20,6 +20,7 @@ Contains typescript guards for identifying type information.
 * {@link is_relative_only} Returns true if value is a {@link RelativeOnlyPointer}
 
 ### Error classes
+Classes used when throwing errors
 
 * {@link pointer-decoding-error} Error class thrown for pointer decoding errors
 * {@link pointer-encoding-error} Error class thrown for pointer encoding errors
@@ -27,27 +28,39 @@ Contains typescript guards for identifying type information.
 ### Creation
 Functions used for creating paths from their constituent parts
 
-* {@link pointer_encoded} Create a {@link Pointer} from an optional `relative` number and a series of encoded segments
-* {@link pointer_decoded} Create a {@link Pointer} from an optional `relative` number and a series of decoded segments
-* {@link absolute_encoded} Create an {@link AbsolutePointer} from a series of encoded segments
-* {@link absolute_decoded} Create an {@link AbsolutePointer} from a series of decoded segments
-* {@link relative_encoded} Create a {@link RelativePointer} from a `relative` number and a series of encoded segments
-* {@link relative_decoded} Create a {@link RelativePointer} from a `relative` number and a series of decoded segments
+* {@link pointer} Create a {@link Pointer} from an optional `relative` number and a series of decoded segments
+* {@link absolute} Create an {@link AbsolutePointer} from a series of decoded segments
+* {@link relative} Create a {@link RelativePointer} from a `relative` number and a series of decoded segments
 * {@link relative_iref} Create a {@link RelativeIRefPointer} from a `relative` number
 
+* {@link pointer_encoded} Create a {@link Pointer} from an optional `relative` number and a series of encoded segments
+* {@link absolute_encoded} Create an {@link AbsolutePointer} from a series of encoded segments
+* {@link relative_encoded} Create a {@link RelativePointer} from a `relative` number and a series of encoded segments
+
 ### Joining
+Combining pointer components and segments
 
 * {@link join_pointer} Join two {@link Pointer}s together
-* {@link join_encoded_segments} Append encoded segments onto an existing {@link Pointer}
-* {@link join_decoded_segments} Append decoded segments onto an existing {@link Pointer}
+* {@link join_segments} Append decoded segments onto an existing {@link Pointer}
 * {@link join_iref} Append an index reference onto a {@link RelativeOnlyPointer}
 
+* {@link join_encoded_segments} Append encoded segments onto an existing {@link Pointer}
+
 ### Encoding
+Encode and decode path segments
 
 * {@link segment_encode} Encode a given string segment
 * {@link segment_decode} Decode a given string segment
 
 ### Splitting
+Split paths into their constituent components/segments
+
+* {@link split} Split a {@link Pointer} into its constituent parts, decoding each segment
+* {@link split_pure} Split a {@link PurePointer} into its constituent parts, decoding each segment
+* {@link split_absolute} Split a {@link AbsolutePointer} into its constituent parts, decoding each segment
+* {@link split_relative} Split a {@link RelativePointer} into its constituent parts, decoding each segment
+* {@link split_relative_pure} Split a {@link RelativePurePointer} into its constituent parts, decoding each segment
+* {@link split_relative_iref} Split a {@link RelativeIRefPointer} into its constituent parts, decoding each segment
 
 * {@link split_encoded} Split a {@link Pointer} into its constituent parts, leaving segments encoded
 * {@link split_encoded_pure} Split a {@link PurePointer} into its constituent parts, leaving segments encoded
@@ -55,13 +68,6 @@ Functions used for creating paths from their constituent parts
 * {@link split_encoded_relative} Split a {@link RelativePointer} into its constituent parts, leaving segments encoded
 * {@link split_encoded_relative_pure} Split a {@link RelativePurePointer} into its constituent parts, leaving segments encoded
 * {@link split_encoded_relative_iref} Split a {@link RelativeIRefPointer} into its constituent parts, leaving segments encoded
-
-* {@link split_decoded} Split a {@link Pointer} into its constituent parts, decoding each segment
-* {@link split_decoded_pure} Split a {@link PurePointer} into its constituent parts, decoding each segment
-* {@link split_decoded_absolute} Split a {@link AbsolutePointer} into its constituent parts, decoding each segment
-* {@link split_decoded_relative} Split a {@link RelativePointer} into its constituent parts, decoding each segment
-* {@link split_decoded_relative_pure} Split a {@link RelativePurePointer} into its constituent parts, decoding each segment
-* {@link split_decoded_relative_iref} Split a {@link RelativeIRefPointer} into its constituent parts, decoding each segment
 
 ## Installation
 
