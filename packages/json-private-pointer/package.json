@@ -1,6 +1,6 @@
 {
   "name": "@crikey/json-private-pointer",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "packageManager": "pnpm@6.0.0",
   "engines": {
@@ -39,7 +39,7 @@
     "publish:ifnew": "test \"$(pnpm view $npm_package_name@$npm_package_version version)\" = \"$npm_package_version\" || pnpm publish --access public"
   },
   "dependencies": {
-    "@crikey/json": "workspace:^0.0.1",
-    "@crikey/json-pointer": "workspace:^0.0.1"
+    "@crikey/json": "workspace:^0.0.2",
+    "@crikey/json-pointer": "workspace:^0.0.2"
   }
 }
