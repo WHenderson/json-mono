@@ -11,7 +11,7 @@ export function clone(value: Jsonish): Jsonish {
     return _clone(value, []);
 }
 
-export function _clone(value: Jsonish, stack: JsonContainerish[]): Jsonish {
+function _clone(value: Jsonish, stack: JsonContainerish[]): Jsonish {
     if (value === undefined || is_primitive(value))
         return value;
 
