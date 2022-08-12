@@ -1,0 +1,147 @@
+name: "Publish"
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_outside_develop:
+        description: 'Tick to confirm if intentionally running outside of develop'
+        required: true
+        type: boolean
+
+jobs:
+  # Ensure we are running on the expected branch
+  validate:
+    name: 'Validate'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate
+        if: github.ref != 'refs/heads/develop'
+        env:
+          CONFIRM_OUTSIDE: ${{ github.event.inputs.confirm_outside_develop }}
+        run: |
+          if [ "$CONFIRM_OUTSIDE" == 'false' ]; then
+            echo "It looks like you've accidentally tried to run this action outside of develop. Either: "
+            echo " - Re-run the pipeline and select develop, or"
+            echo " - If you really do want to run on this branch, then re-run and tick the box to confirm"
+            exit 1
+          fi
+
+  version-and-publish:
+    needs: validate
+    name: "Publish updated packages"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.1.0
+        with:
+          version: latest
+
+      - name: Find current package version
+        run: echo "MONO_VERSION=$(node -e "console.log(require('./package.json').version.match(/^[^+]+/)[0]);")" >> $GITHUB_ENV
+
+      - name: Setup git details
+        run: |
+          git config --local user.email "whenderson+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+
+      - name: Create release branch
+        run: |
+          git branch "release/v${MONO_VERSION}+${GITHUB_RUN_NUMBER}"
+          git checkout "release/v${MONO_VERSION}+${GITHUB_RUN_NUMBER}"
+
+      - name: echo "Install only root workspace dependencies"
+        run: |
+          echo "recursive-install=false" >> .npmrc
+          pnpm install
+          git add pnpm-lock.yaml
+          git checkout -- .npmrc
+
+      - name: Apply changesets
+        run: pnpm changeset version
+
+      - name: Get commit message
+        run: |
+          echo "MONO_COMMIT<<EOF" >> $GITHUB_ENV
+          echo "$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "Message - $MONO_COMMIT"
+
+      - name: Reset local commits
+        run: git reset --soft develop
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Add package lock if necessary
+        run: git add pnpm-lock.yaml
+
+      - name: Commit changes
+        run: git commit -m "$MONO_COMMIT"
+
+      - name: Build modules
+        run: pnpm run build
+
+      - name: Build docs
+        run: pnpm run build:docs
+
+      - run: echo "Git status"
+      - run: git branch --show-current
+      - run: git status -b -s
+      - run: git diff
+
+      - name: Tag changed modules
+        run: >
+          git diff-tree -r --name-only HEAD |
+          jq -R -s -c 'scan("(?<=packages/)[^/]+(?=/)")' |
+          uniq |
+          xargs -L1 node -e "const process = require('process'); console.log(process.argv[1] + '/v' + require('./packages/' + process.argv[1] + '/package.json').version + '+' + process.env.GITHUB_RUN_NUMBER)" |
+          xargs -L1 git tag
+
+      - name: Show git tags
+        run: git push --tags --dry-run
+
+      - name: Merge
+        run: |
+          git checkout develop
+          git merge "release/v${MONO_VERSION}+${GITHUB_RUN_NUMBER}"
+          git checkout master
+          git merge "release/v${MONO_VERSION}+${GITHUB_RUN_NUMBER}"
+          git branch -D "release/v${MONO_VERSION}+${GITHUB_RUN_NUMBER}"
+
+      - name: Push
+        run: |
+          git push origin --all
+          git push origin --tags
+
+      - name: Publish Packages
+        uses: changesets/action@v1
+        with:
+          publish: pnpm run publish:packages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish Docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/docs
