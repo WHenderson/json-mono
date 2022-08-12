@@ -5,12 +5,14 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group splitters
  */
 export function split_encoded_relative_iref(pointer: RelativeIRefPointer): number;
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group splitters
  */
 export function split_encoded_relative_iref(pointer: string): number;
 

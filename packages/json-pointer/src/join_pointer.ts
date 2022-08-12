@@ -8,6 +8,7 @@ import {split_encoded_relative_pure} from "./split_encoded_relative_pure";
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group joiners
  */
 export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: AbsolutePointer): AbsolutePointer;
 
@@ -15,6 +16,7 @@ export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: Absolut
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group joiners
  */
 export function join_pointer(lhs_pure_pointer: RelativeOnlyPointer, rhs_pure_pointer: RelativeOnlyPointer): RelativeOnlyPointer;
 
@@ -22,6 +24,7 @@ export function join_pointer(lhs_pure_pointer: RelativeOnlyPointer, rhs_pure_poi
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group joiners
  */
 export function join_pointer(lhs_pure_pointer: RelativePurePointer | RelativeOnlyPointer, rhs_pure_pointer: RelativePurePointer): RelativePurePointer;
 
@@ -29,6 +32,7 @@ export function join_pointer(lhs_pure_pointer: RelativePurePointer | RelativeOnl
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group joiners
  */
 export function join_pointer(lhs_pure_pointer: PurePointer, rhs_pure_pointer: PurePointer): PurePointer;
 
@@ -36,6 +40,7 @@ export function join_pointer(lhs_pure_pointer: PurePointer, rhs_pure_pointer: Pu
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group joiners
  */
 export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: string): PurePointer;
 

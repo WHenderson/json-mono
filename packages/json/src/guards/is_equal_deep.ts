@@ -10,6 +10,7 @@ import {MaybeJsonish} from "../types";
  *
  * @param lhs
  * @param rhs
+ * @group util
  */
 export function compare_entries_by_key([lhs,]: [string, unknown], [rhs,]: [string, unknown]): -1 | 1 {
     return (lhs < rhs) ? -1 : 1;
@@ -24,6 +25,7 @@ export function compare_entries_by_key([lhs,]: [string, unknown], [rhs,]: [strin
  * @param options options used to control how comparisons are performed
  * @param options.sort if true, will sort object keys before evaluation
  * @param options.filter if true, will filter undefined keys before evaluation
+ * @group guards
  */
 export function is_equal_deep(lhs: MaybeJsonish, rhs: MaybeJsonish, options?: { sort?: boolean, filter?:boolean }): boolean {
     if (lhs === rhs || Number.isNaN(lhs) && Number.isNaN(rhs))

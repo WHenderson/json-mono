@@ -4,6 +4,7 @@ import {is_array, is_primitive} from "../guards";
 /**
  * Returns a deep clone of the given value Json or Jsonish value
  * @param value
+ * @group util
  */
 export function clone<T>(value: undefined | JsonPrimitive | T[] | Record<string, T>): undefined | JsonPrimitive | T[] | Record<string, T>;
 

@@ -7,6 +7,7 @@ import {parse_index} from "../util";
  * Returns true if value has key or index
  * @param value
  * @param key_or_index
+ * @group access
  */
 export function container_has_key_or_index<T>(value: Record<string, T> | T[], key_or_index: string | number): boolean {
     if (is_array(value)) {

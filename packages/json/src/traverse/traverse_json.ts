@@ -6,6 +6,7 @@ import {traverse_has} from "./traverse_has";
 
 /**
  * Fixed collection of traversal methods tailored for the {@link Json} type
+ * @group traverse
  */
 export const traverse_json = {
     has: traverse_has,

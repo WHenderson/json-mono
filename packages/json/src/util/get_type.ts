@@ -1,9 +1,10 @@
-import {JsonToType, JsonTypeEnum} from "./index";
+import {JsonToType, JsonTypeEnum} from "../types";
 import {is_array, is_object} from "../guards";
 
 /**
  * Returns the type of the given value
  * @param value
+ * @group util
  */
 export function get_type<T>(value: T) : JsonToType<T>;
 

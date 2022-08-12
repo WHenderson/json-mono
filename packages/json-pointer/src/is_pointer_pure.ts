@@ -5,6 +5,7 @@ import {parse_index_string} from '@crikey/json';
  * Returns true if value is an absolute or relative pointer.
  * Returns false on invalid or iref pointers.
  * @param value
+ * @group guards
  */
 export function is_pointer_pure(value: any) : value is PurePointer {
     if (typeof value !== 'string')

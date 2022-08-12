@@ -5,24 +5,28 @@ import {split_encoded} from "./split_encoded";
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split(pointer: AbsolutePointer): { segments: Segment[] };
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split(pointer: string): { segments: Segment[] } | { relative: number, segments: Segment[] } | { relative: number, is_iref: true }
 

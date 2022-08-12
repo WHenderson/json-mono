@@ -8,6 +8,7 @@ import {traverse_jsonish_update} from "./traverse_jsonish_update";
  * @param path
  * @param value
  * @param creator optional method for creating missing parents as a path is constructed. default is {@link creator_err_object}
+ * @group traverse
  */
 export function traverse_jsonish_set(root: MaybeJsonish, path: Path, value: MaybeJsonish, creator?: (next: PathSegment) => Jsonish): MaybeJsonish {
     return traverse_jsonish_update(root, path, () => value, creator);

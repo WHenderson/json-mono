@@ -10,6 +10,7 @@ import {parse_index} from "../util";
  *
  * @param value
  * @param key_or_index
+ * @group access
  */
 export function container_item<T>(value: Record<string, T> | T[], key_or_index: number | string): T | undefined {
     if (is_array(value)) {

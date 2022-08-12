@@ -5,6 +5,7 @@ import {object_has_key} from "./object_has_key";
  *
  * @param json
  * @param key
+ * @group access
  */
 export function object_member<T>(json: Record<string, T>, key: string): T | undefined {
     if (!object_has_key(json, key))

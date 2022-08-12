@@ -4,6 +4,7 @@
  *
  * @param value
  * @param index
+ * @group access
  */
 export function array_has_index<T>(value: T[], index: number): boolean {
     return value !== undefined && Number.isInteger(index) && index >= 0 && index < value.length;

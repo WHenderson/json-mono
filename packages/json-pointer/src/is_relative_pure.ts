@@ -5,6 +5,7 @@ import {parse_index_string} from "@crikey/json";
  * Returns true if value is a string representing a Relative JSON Pointer
  * @see [Relative JSON Pointers](https://tools.ietf.org/id/draft-handrews-relative-json-pointer-00.html#rfc.section.3)
  * @param value
+ * @group guards
  */
 export function is_relative_pure(value: any) : value is RelativeOnlyPointer | RelativePurePointer {
     if (typeof value !== 'string')

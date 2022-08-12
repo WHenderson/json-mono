@@ -8,6 +8,7 @@ import {is_object} from "./is_object";
  * Note that this does not guarantee that all values are encodable.
  *
  * @param value
+ * @group guards
  */
 export function is_jsonish_deep<T>(value: any | undefined | JsonPrimitive | T[] | Record<string, T>): value is undefined | JsonPrimitive | T[] | Record<string, T> {
     return _is_jsonish_deep(value, []);

@@ -8,6 +8,7 @@ import {_next} from "./_next";
  * @returns the original input, or undefined if path was empty
  * @param root
  * @param path
+ * @group traverse
  */
 export function traverse_delete(root: MaybeJson, path: Path): MaybeJson;
 
@@ -16,6 +17,7 @@ export function traverse_delete(root: MaybeJson, path: Path): MaybeJson;
  * @returns the original input, or undefined if path was empty
  * @param root
  * @param path
+ * @group traverse
  */
 export function traverse_delete(root: MaybeJsonish, path: Path): MaybeJsonish;
 

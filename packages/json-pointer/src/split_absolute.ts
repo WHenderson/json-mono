@@ -5,12 +5,14 @@ import {split_encoded_absolute} from "./split_encoded_absolute";
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split_absolute(pointer: AbsolutePointer): Segment[];
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
+ * @group splitters
  */
 export function split_absolute(pointer: string): Segment[];
 

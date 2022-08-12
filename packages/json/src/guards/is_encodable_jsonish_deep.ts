@@ -10,6 +10,7 @@ import {is_undefined} from "./is_undefined";
  * Returns true if value is a json object where every nested value is encodable
  * Note that object members and array elements may be undefined
  * @param value
+ * @group guards
  */
 export function is_encodable_jsonish_deep<T>(value: any | undefined | JsonPrimitive | T[] | Record<string, T>): value is undefined | JsonPrimitive | T[] | Record<string, T> {
     return _is_encodable_jsonish_deep(value, []);

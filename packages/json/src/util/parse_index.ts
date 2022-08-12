@@ -1,13 +1,10 @@
-/**
- * Parses the given encoded_index into an index, or undefined if it is invalid
- * @param index
- */
 import {is_index_number} from "../guards";
 import {IndexNumber} from "../types";
 
 /**
  * Returns the numerical representation of encoded_index, or undefined.
  * @param encoded_index
+ * @group util
  */
 export function parse_index(encoded_index: any) : IndexNumber | undefined {
     if (typeof encoded_index === 'number') {

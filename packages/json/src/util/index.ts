@@ -1,3 +1,5 @@
+export * from "./get_type";
+
 export * from "./clone";
 
 export * from "./parse_index";

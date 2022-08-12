@@ -5,6 +5,7 @@ import {PointerEncodingError} from "./pointer-encoding-error";
 /**
  * Generates an index reference pointer
  * @param relative
+ * @group creators
  */
 export function relative_iref(relative: number) : RelativeIRefPointer {
     if (!is_index_number(relative))

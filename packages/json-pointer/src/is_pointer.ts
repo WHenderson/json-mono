@@ -4,6 +4,7 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Returns true if value is a pointer
  * @param value
+ * @group guards
  */
 export function is_pointer(value: any): value is Pointer {
     if (typeof value !== 'string')

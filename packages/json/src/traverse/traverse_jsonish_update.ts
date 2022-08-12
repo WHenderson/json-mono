@@ -12,6 +12,7 @@ import {creator_err_object} from "./creator_err_object";
  * @param path
  * @param update accepts the current value and returns the resulting value
  * @param creator optional method for creating missing parents as a path is constructed. default is {@link creator_err_object}
+ * @group traverse
  */
 export function traverse_jsonish_update(root: MaybeJsonish, path: Path, update: (value: MaybeJsonish) => MaybeJsonish, creator?: (next: PathSegment) => Jsonish): MaybeJsonish;
 

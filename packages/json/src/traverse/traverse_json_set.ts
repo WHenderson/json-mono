@@ -10,6 +10,7 @@ import {traverse_delete} from "./traverse_delete";
  * @param path
  * @param value
  * @param creator optional method for creating missing parents as a path is constructed. default is {@link creator_err_object}
+ * @group traverse
  */
 export function traverse_json_set(root: MaybeJson, path: Path, value: MaybeJson, creator?: (next: PathSegment) => Json): MaybeJson {
     if (value === undefined)

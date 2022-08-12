@@ -7,6 +7,7 @@ import {is_index_number, is_index_string} from "../guards";
  * Throws if there is any ambiguity (i.e. invalid numerical index, '-', 'length', string representation of an index)
  * Otherwise, returns an empty object.
  * @param next
+ * @group traverse
  */
 export function creator_throw_ambiguous(next: PathSegment): JsonContainer {
     if (is_index_number(next))

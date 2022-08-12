@@ -5,6 +5,7 @@ import {JsonObject} from "../types";
  *
  * @param target
  * @param sources
+ * @group util
  */
 export function object_assign(target: JsonObject, ...sources: JsonObject[]): JsonObject {
     for (const source of sources) {

@@ -9,6 +9,7 @@ import {is_object} from "./is_object";
  * Note that object members may be undefined
  *
  * @param value
+ * @group guards
  */
 export function is_json_deep<T>(value: any | JsonPrimitive | T[] | Record<string, T>): value is JsonPrimitive | T[] | Record<string, T> {
     return _is_json_deep(value, []);

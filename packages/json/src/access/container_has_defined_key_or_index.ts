@@ -9,6 +9,7 @@ import {parse_index} from "../util";
  *
  * @param value
  * @param key_or_index
+ * @group access
  */
 export function container_has_defined_key_or_index<T>(value: Record<string, T> | T[], key_or_index: string | number): boolean {
     if (is_array(value)) {
