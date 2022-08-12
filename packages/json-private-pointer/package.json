@@ -13,7 +13,10 @@
     "package.json",
     "README.md"
   ],
-  "typedocMain": "src/index.ts",
+  "typedoc": {
+    "entryPoint": "src/index.ts",
+    "readmeFile": "README.TYPEDOC.md"
+  },
   "publishConfig": {
     "main": "dist/index",
     "module": "dist/index.mjs",
