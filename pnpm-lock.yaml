@@ -39,14 +39,14 @@ importers:
 
   packages/json-pointer:
     specifiers:
-      '@crikey/json': workspace:^0.0.0
+      '@crikey/json': workspace:^0.0.1
     dependencies:
       '@crikey/json': link:../json
 
   packages/json-private-pointer:
     specifiers:
-      '@crikey/json': workspace:^0.0.0
-      '@crikey/json-pointer': workspace:^0.0.0
+      '@crikey/json': workspace:^0.0.1
+      '@crikey/json-pointer': workspace:^0.0.1
     dependencies:
       '@crikey/json': link:../json
       '@crikey/json-pointer': link:../json-pointer
