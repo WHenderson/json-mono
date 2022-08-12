@@ -86,7 +86,95 @@ $ npm add @crikey/json
 $ yarn add @crikey/json
 ```
 
-## Usage
+## Example Usage
 
-All API functions have simple clean semantics and should be easy to understand.
-Examples of each API can be found under test.
+### Example Guards
+
+```ts
+const value: any = {a: NaN};
+
+console.log(is_json(value)); // true
+console.log(is_json_deep(value)); // true
+console.log(is_encodable_json_deep(value)); // false - NaN is not a valid JSON value and will be cooerced into a null
+```
+
+```ts
+const value: any = {a: undefined};
+
+console.log(is_json(value)); // true
+console.log(is_json_deep(value)); // false - json does not support undefined values
+console.log(is_jsonish_deep(value)); // true - jsonish does support undefined values
+```
+
+### Example Access
+
+```ts
+const parent = {x: 1};
+const child = {y: 1};
+child.__proto__ = parent;
+
+console.log('x' in child); // true
+console.log(object_has_key(child, 'x')); // false
+console.log(object_has_key(child, 'y')); // true
+console.log(object_keys(child)); // ['y']
+console.log(object_entries(child)); // [['y', 2]]
+```
+
+```ts
+import {array_has_index} from "./array_has_index";
+
+const value = ['a', 'b', 'c'];
+
+console.log(array_has_index(value, 0)); // true
+console.log(array_has_index(value, 3)); // false
+console.log(array_element(value, 1)); // 'b'
+```
+
+### Example Traverse
+
+```ts
+import {traverse_get} from "./traverse_get";
+import {traverse_json} from "./traverse_json";
+
+const value = {foo: ['bar', 'baz']};
+
+console.log(traverse_json.get(value, ['foo', 0])); // 'bar'
+console.log(traverse_json.get(value, ['foo', 1])); // 'baz'
+console.log(traverse_json.get(value, ['fah'])); // undefined
+console.log(traverse_json.set(value, ['fah'], 1)); // {foo: ['bar', 'baz'], fah: 1}
+```
+
+### Example Util
+
+```ts
+const value = 'my value';
+const type: JsonTypeEnum = get_type(value); 
+console.log(type); // 'string'
+```
+
+```ts
+const value = {a: 1, b: undefined, c:[]};
+const cloned = clone(value);
+
+console.log(cloned); // {a: 1, b: undefined, c:[]}
+```
+
+```ts
+import {parse_index} from "./parse_index";
+
+console.log(parse_index(1)); // 1
+console.log(parse_index(1.1)); // undefined
+console.log(parse_index('1')); // 1
+console.log(parse_index('1.1')); // undefined
+
+console.log(parse_index_string('1')); // 1
+console.log(parse_index_string('1.1')); // undefined
+```
+
+```ts
+const unsafe = Object.assign({}, { ['__proto__']: { x: 1 }});
+const safe = object_assign({}, { ['__proto__']: { x: 1 }});
+
+console.log(unsafe); // {}
+console.log(safe); // { ['__proto__']: { x: 1 }}
+```
