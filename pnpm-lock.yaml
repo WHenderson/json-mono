@@ -1,4 +1,4 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 importers:
 
@@ -21,13 +21,13 @@ importers:
     devDependencies:
       '@changesets/cli': 2.24.2
       '@rollup/plugin-node-resolve': 13.3.0_rollup@2.77.2
-      '@rollup/plugin-typescript': 8.3.4_6007e44719483b228aab9231b74a145c
+      '@rollup/plugin-typescript': 8.3.4_mad6iryzja5sfcvlsiy3osqulq
       '@types/node': 18.7.1
       c8: 7.12.0
       rimraf: 3.0.2
       rollup: 2.77.2
       rollup-plugin-auto-external: 2.0.0_rollup@2.77.2
-      rollup-plugin-dts: 4.2.2_rollup@2.77.2+typescript@4.7.4
+      rollup-plugin-dts: 4.2.2_oo3i3f3qmqiztdz5qgxrrjmd5e
       tslib: 2.4.0
       typedoc: 0.23.10_typescript@4.7.4
       typescript: 4.7.4
@@ -354,7 +354,7 @@ packages:
       rollup: 2.77.2
     dev: true
 
-  /@rollup/plugin-typescript/8.3.4_6007e44719483b228aab9231b74a145c:
+  /@rollup/plugin-typescript/8.3.4_mad6iryzja5sfcvlsiy3osqulq:
     resolution: {integrity: sha512-wt7JnYE9antX6BOXtsxGoeVSu4dZfw0dU3xykfOQ4hC3EddxRbVG/K0xiY1Wup7QOHJcjLYXWAn0Kx9Z1SBHHg==}
     engines: {node: '>=8.0.0'}
     peerDependencies:
@@ -2017,7 +2017,7 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /rollup-plugin-dts/4.2.2_rollup@2.77.2+typescript@4.7.4:
+  /rollup-plugin-dts/4.2.2_oo3i3f3qmqiztdz5qgxrrjmd5e:
     resolution: {integrity: sha512-A3g6Rogyko/PXeKoUlkjxkP++8UDVpgA7C+Tdl77Xj4fgEaIjPSnxRmR53EzvoYy97VMVwLAOcWJudaVAuxneQ==}
     engines: {node: '>=v12.22.11'}
     peerDependencies:
