@@ -8,6 +8,7 @@ import {PointerEncodingError} from "@crikey/json-pointer";
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group Joiners
  */
 export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: AbsolutePointer): AbsolutePointer;
 
@@ -15,6 +16,7 @@ export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: Absolut
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group Joiners
  */
 export function join_pointer(lhs_pure_pointer: RelativePointer, rhs_pure_pointer: RelativePointer): RelativePointer;
 
@@ -22,6 +24,7 @@ export function join_pointer(lhs_pure_pointer: RelativePointer, rhs_pure_pointer
  * Combines two pointers
  * @param lhs_pure_pointer
  * @param rhs_pure_pointer
+ * @group Joiners
  */
 export function join_pointer(lhs_pure_pointer: string, rhs_pure_pointer: string): Pointer;
 

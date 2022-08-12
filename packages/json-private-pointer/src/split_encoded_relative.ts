@@ -5,6 +5,7 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group Splitters
  */
 export function split_encoded_relative(pointer: string): { relative: number, segments: EncodedSegment[] } {
     const match = pointer.match(/^(0|[1-9][0-9]*)(?:$|\/(?:[^~:]|~0|~1|:0|:1)*$)/);

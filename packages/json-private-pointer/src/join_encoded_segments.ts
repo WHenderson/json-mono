@@ -6,6 +6,7 @@ import {PointerEncodingError} from "@crikey/json-pointer";
  * Appends pre-encoded path segments onto an existing pointer
  * @param pure_pointer
  * @param encoded_segments pre-encoded path segments
+ * @group Joiners
  */
 export function join_encoded_segments(pure_pointer: AbsolutePointer, ...encoded_segments: Segment[]): AbsolutePointer;
 
@@ -13,6 +14,7 @@ export function join_encoded_segments(pure_pointer: AbsolutePointer, ...encoded_
  * Appends pre-encoded path segments onto an existing pointer
  * @param pure_pointer
  * @param encoded_segments pre-encoded path segments
+ * @group Joiners
  */
 export function join_encoded_segments(pure_pointer: RelativePointer, ...encoded_segments: Segment[]): RelativePointer;
 
@@ -20,6 +22,7 @@ export function join_encoded_segments(pure_pointer: RelativePointer, ...encoded_
  * Appends pre-encoded path segments onto an existing pointer
  * @param pure_pointer
  * @param encoded_segments pre-encoded path segments
+ * @group Joiners
  */
 export function join_encoded_segments(pure_pointer: string, ...encoded_segments: Segment[]): Pointer;
 

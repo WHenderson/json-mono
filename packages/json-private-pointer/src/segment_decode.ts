@@ -3,6 +3,7 @@ import {DecodedSegment, Segment} from "./types";
 /**
  * Decodes an encoded segment
  * @param segment
+ * @group Encoding
  */
 export function segment_decode(segment: Segment): DecodedSegment {
     const [is_private, remainder] = segment.startsWith('~3')

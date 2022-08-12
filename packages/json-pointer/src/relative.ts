@@ -7,7 +7,7 @@ import {PointerEncodingError} from "./pointer-encoding-error";
  * Generates a relative pointer
  * @param relative
  * @param segments
- * @group creators
+ * @group Creators
  */
 export function relative(relative: number, ...segments: Segment[]) : RelativeOnlyPointer | RelativePurePointer {
     if (!is_index_number(relative))

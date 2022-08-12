@@ -3,6 +3,7 @@ import {AbsolutePointer} from "./types";
 /**
  * Returns true if value is a string representing a private pointer
  * @param value
+ * @group Guards
  */
 export function is_absolute(value: any): value is AbsolutePointer {
     if (typeof value !== 'string')

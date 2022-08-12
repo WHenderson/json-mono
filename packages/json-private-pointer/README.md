@@ -1,8 +1,9 @@
-# @crikey/json-pointer
+# @crikey/json-private-pointer
 
-Functions for handling JSON pointers [rfc6901](https://www.rfc-editor.org/rfc/rfc6901.html) and [relative-json-pointer](https://datatracker.ietf.org/doc/html/draft-luff-relative-json-pointer-00)
+Functions for handling JSON pointers [rfc6901](https://www.rfc-editor.org/rfc/rfc6901.html) and [relative-json-pointer](https://datatracker.ietf.org/doc/html/draft-luff-relative-json-pointer-00),
+with an additional extension for marking path segments as "public" or "private".
 
-See [@crikey/json-pointer](https://whenderson.github.io/json-mono/modules/_crikey_json_pointer.html) for full documentation.
+See [@crikey/json-private-pointer](https://whenderson.github.io/json-mono/modules/_crikey_json_private_pointer.html) for full documentation.
 
 ## API
 

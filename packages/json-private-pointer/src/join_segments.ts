@@ -7,6 +7,7 @@ import {join_encoded_segments} from "./join_encoded_segments";
  * Appends path segments onto an existing pointer
  * @param pure_pointer
  * @param segments
+ * @group Joiners
  */
 export function join_segments(pure_pointer: AbsolutePointer, ...segments: (Segment | DecodedSegment)[]): AbsolutePointer;
 
@@ -14,6 +15,7 @@ export function join_segments(pure_pointer: AbsolutePointer, ...segments: (Segme
  * Appends path segments onto an existing pointer
  * @param pure_pointer
  * @param segments
+ * @group Joiners
  */
 export function join_segments(pure_pointer: RelativePointer, ...segments: (Segment | DecodedSegment)[]): RelativePointer;
 
@@ -21,6 +23,7 @@ export function join_segments(pure_pointer: RelativePointer, ...segments: (Segme
  * Appends path segments onto an existing pointer
  * @param pure_pointer
  * @param segments
+ * @group Joiners
  */
 export function join_segments(pure_pointer: string, ...segments: (Segment | DecodedSegment)[]): Pointer;
 

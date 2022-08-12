@@ -5,6 +5,7 @@ import {relative_encoded} from "./relative_encoded";
 /**
  * Generates an absolute pointer
  * @param encoded_segments pre-encoded path segments
+ * @group Creators
  */
 export function pointer_encoded(...encoded_segments: EncodedSegment[]) : AbsolutePointer;
 
@@ -12,6 +13,7 @@ export function pointer_encoded(...encoded_segments: EncodedSegment[]) : Absolut
  * Generates a relative pointer
  * @param relative
  * @param encoded_segments pre-encoded path segments
+ * @group Creators
  */
 export function pointer_encoded(relative: number, ...encoded_segments: EncodedSegment[]) : RelativePointer;
 
@@ -19,6 +21,7 @@ export function pointer_encoded(relative: number, ...encoded_segments: EncodedSe
  * Generates a pointer
  * @param relative
  * @param encoded_segments pre-encoded path segments
+ * @group Creators
  */
 export function pointer_encoded(relative: number | undefined, ...encoded_segments: EncodedSegment[]) : Pointer
 

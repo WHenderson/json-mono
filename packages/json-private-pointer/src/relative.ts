@@ -7,6 +7,7 @@ import {PointerEncodingError} from "@crikey/json-pointer";
  * Generates a relative pointer
  * @param relative
  * @param segments
+ * @group Creators
  */
 export function relative(relative: number, ...segments: (Segment | DecodedSegment)[]) : RelativePointer {
     if (!is_index_number(relative))

@@ -5,18 +5,21 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group Splitters
  */
 export function split_encoded(pointer: AbsolutePointer): { segments: EncodedSegment[] };
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group Splitters
  */
 export function split_encoded(pointer: RelativePointer): { relative: number, segments: EncodedSegment[] };
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
+ * @group Splitters
  */
 export function split_encoded(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] };
 

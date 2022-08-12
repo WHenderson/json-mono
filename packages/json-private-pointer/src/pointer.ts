@@ -5,6 +5,7 @@ import {AbsolutePointer, DecodedSegment, Pointer, RelativePointer, Segment} from
 /**
  * Generates an absolute pointer
  * @param segments
+ * @group Creators
  */
 export function pointer(...segments: (Segment | DecodedSegment)[]) : AbsolutePointer;
 
@@ -13,6 +14,7 @@ export function pointer(...segments: (Segment | DecodedSegment)[]) : AbsolutePoi
  * Generates an relative pointer
  * @param relative
  * @param segments
+ * @group Creators
  */
 export function pointer(relative: number, ...segments: (Segment | DecodedSegment)[]) : RelativePointer;
 
@@ -20,6 +22,7 @@ export function pointer(relative: number, ...segments: (Segment | DecodedSegment
  * Generates a pointer
  * @param relative
  * @param segments
+ * @group Creators
  */
 export function pointer(relative: number | undefined, ...segments: (Segment | DecodedSegment)[]) : Pointer;
 

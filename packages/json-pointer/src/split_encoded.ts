@@ -6,28 +6,28 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_encoded(pointer: AbsolutePointer): { segments: EncodedSegment[] };
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_encoded(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_encoded(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: EncodedSegment[] };
 
 /**
  * Splits a pointer into its constituent parts, leaving path segments encoded
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_encoded(pointer: string): { segments: EncodedSegment[] } | { relative: number, segments: EncodedSegment[] } | { relative: number, is_iref: true }
 

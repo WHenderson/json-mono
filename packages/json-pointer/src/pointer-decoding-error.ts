@@ -1,6 +1,6 @@
 /**
  * Used to represent a failure during the decoding of a pointer
- * @group exceptions
+ * @group Exceptions
  */
 export class PointerDecodingError extends TypeError {
     constructor(message = PointerDecodingError.name) {

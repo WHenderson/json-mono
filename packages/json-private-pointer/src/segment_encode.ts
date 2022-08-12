@@ -3,12 +3,14 @@ import {DecodedSegment, EncodedSegment, Segment} from "./types";
 /**
  * Encodes a segment
  * @param segment
+ * @group Encoding
  */
 export function segment_encode(is_private: boolean, segment: Segment): EncodedSegment;
 
 /**
  * Encodes a segment
  * @param segment
+ * @group Encoding
  */
 export function segment_encode(segment: Segment | DecodedSegment): EncodedSegment;
 

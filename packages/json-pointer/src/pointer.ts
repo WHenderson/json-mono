@@ -5,7 +5,7 @@ import {relative} from "./relative";
 /**
  * Generates an absolute pointer
  * @param segments
- * @group creators
+ * @group Creators
  */
 export function pointer(...segments: Segment[]) : AbsolutePointer;
 
@@ -13,7 +13,7 @@ export function pointer(...segments: Segment[]) : AbsolutePointer;
  * Generates a relative pointer
  * @param relative
  * @param segments
- * @group creators
+ * @group Creators
  */
 export function pointer(relative: number, ...segments: Segment[]) : RelativePurePointer | RelativeOnlyPointer;
 
@@ -21,7 +21,7 @@ export function pointer(relative: number, ...segments: Segment[]) : RelativePure
  * Generates a pointer
  * @param relative
  * @param segments
- * @group creators
+ * @group Creators
  */
 export function pointer(relative: number | undefined, ...segments: Segment[]) : PurePointer;
 

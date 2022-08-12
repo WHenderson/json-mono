@@ -5,21 +5,21 @@ import {split_encoded_relative} from "./split_encoded_relative";
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_relative(pointer: RelativeIRefPointer): { relative: number, is_iref: true };
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_relative(pointer: RelativeOnlyPointer | RelativePurePointer): { relative: number, segments: Segment[] };
 
 /**
  * Splits a pointer into its constituent parts, decoding any path segments
  * @param pointer
- * @group splitters
+ * @group Splitters
  */
 export function split_relative(pointer: string): { relative: number, segments: Segment[] } | { relative: number, is_iref: true };
 

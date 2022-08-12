@@ -4,6 +4,7 @@ import {parse_index_string} from "@crikey/json";
 /**
  * Returns true if pointer is a string representing a relative private pointer
  * @param pointer
+ * @group Guards
  */
 export function is_relative(pointer: any): pointer is RelativePointer {
     if (typeof pointer !== 'string')
