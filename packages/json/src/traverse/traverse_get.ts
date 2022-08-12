@@ -2,6 +2,7 @@ import {MaybeJson, MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_array, is_container} from "../guards";
 import {parse_index} from "../util";
+import {hasOwn} from "../util/_hasOwn";
 
 /**
  * Returns the value resulting from traversing root with the given path
@@ -44,7 +45,7 @@ export function traverse_get(root: MaybeJsonish, path: Path): MaybeJsonish {
             }
         }
         else {
-            if (!Object.hasOwn(node, segment))
+            if (!hasOwn(node, segment))
                 return undefined;
 
             node = node[segment];

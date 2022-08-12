@@ -2,6 +2,7 @@ import {MaybeJson, MaybeJsonish} from "../types";
 import {Path} from "./types";
 import {is_array, is_container} from "../guards";
 import {parse_index} from "../util";
+import {hasOwn} from "../util/_hasOwn";
 
 /**
  * Traverses root with the given path, returning true if the entire path exists
@@ -43,7 +44,7 @@ export function traverse_has(root: MaybeJsonish, path: Path): boolean {
             }
         }
         else {
-            if (!Object.hasOwn(node, segment))
+            if (!hasOwn(node, segment))
                 return false;
 
             node = node[segment];

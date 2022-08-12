@@ -2,6 +2,7 @@ import {Json, Jsonish} from "../types";
 import {PathSegment} from "./types";
 import {is_container} from "../guards";
 import {parse_index} from "../util";
+import {hasOwn} from "../util/_hasOwn";
 
 export function _next(parent: Json, key_or_index: PathSegment): [PathSegment | undefined, Json];
 export function _next(parent: Jsonish, key_or_index: PathSegment): [PathSegment | undefined, Jsonish];
@@ -49,7 +50,7 @@ export function _next(parent: Jsonish, key_or_index: PathSegment): [PathSegment 
         const key = `${key_or_index}`;
         return [
             key,
-            Object.hasOwn(parent, key)
+            hasOwn(parent, key)
                 ? parent[key]
                 : undefined
         ];
